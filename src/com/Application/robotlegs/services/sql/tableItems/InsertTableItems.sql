@@ -1,0 +1,20 @@
+INSERT INTO main.categories
+(
+	parentId,
+	isChild,
+	label,
+	isPacked,
+	orderIndex,
+	item_id,
+	icon_id	
+)
+VALUES
+(
+	:parentId,
+	:isChild,
+	:label,
+	:isPacked,
+	:orderIndex,
+	:item_id,
+	:icon_id	
+)

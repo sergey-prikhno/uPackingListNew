@@ -1,0 +1,56 @@
+## default.properties file for locale en_US ##
+
+#buttons
+button.ok=OK
+button.cancel=Cancel
+button.scratch=From scratch
+button.existing=From the existing list
+button.edit=Edit
+button.back=Back
+button.no=No
+button.yes=Yes
+button.done=Done
+button.addnewItem=Add new item...
+button.addnewCategory=Add new category...
+button.save=Save
+button.saveAndMore=Save and add more
+
+
+#header
+header.uPackingList=uPackingList
+header.settings=Settings
+header.open=Open
+header.pack=Pack
+
+title.newList=New List
+title.newListDesc=create new packing list
+title.openList=Open
+title.openListDesc=open saved lists
+title.packList=Pack!
+title.packListDesc=pack the list - Business trip female (0%)
+title.create.list=Enter List name
+title.packList=Pack!
+title.tap=Tap to change image...
+
+#WelcomScreen
+welcomScreen.title=Welcome to uPackingList
+welcomScreen.description=Import/export your lists or catalogs from the free version to the paid version of the application and vice versa
+welcomScreen.titleCreate=Create
+welcomScreen.descriptionCreate=Start with "New List" button.
+welcomScreen.titleEdit=Edit
+welcomScreen.descriptionEdit=Click on items to add them to your list. \nUse "Search" to find items in catalog. "Edit" - add, delete or edit items and catalogs.
+welcomScreen.titlePack=Pack
+welcomScreen.descriptionPack=Choose "Pack" to start packing your list.
+welcomScreen.descriptionBottom=Full version has more features and also a "Shopping list"! \n\nYou can purchase a full version containing no banners at the AppStore.
+welcomScreen.niceJourney=Have a nice journey!
+welcomScreen.labelShow=Always show:
+welcomScreen.continue=Continue
+
+#popupRemove
+title.removeItem=Are you sure to delete the item from list
+title.removeCategory=Are you sure to delete the category from list
+
+
+#Search
+search.prompt=Search
+
