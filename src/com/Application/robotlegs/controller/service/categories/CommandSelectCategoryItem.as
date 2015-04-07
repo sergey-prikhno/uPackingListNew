@@ -1,61 +1,61 @@
-package com.Application.robotlegs.model.vo {
+package com.Application.robotlegs.controller.service.categories {
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.services.categories.IServiceCategories;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	
-	public class VOTableName {
-		
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandSelectCategoryItem extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		[Inject]
+		public var event:EventViewAbstract;
 		
+		[Inject]
+		public var service:IServiceCategories;
+		
+		[Inject]
+		public var model:IModel;	
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _id:Number = 0;
-		private var _title:String = "";
-		private var _table_name:String = "";
-		private var _isScratch:Boolean = false;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public function CommandSelectCategoryItem() {
+			super();
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override public function execute():void{
+			trace("Select table Wait for Event with DATA Here");
+								
+			var pData:VOTableName = VOTableName(event.data);
+			model.currentTableName = pData;
+			
+			service.load(model.currentTableName.table_name);			
+		}	
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get id():Number { return _id;}
-		public function set id(value:Number):void{
-			_id = value;
-		}	
-		
-		public function get title():String { return _title;}
-		public function set title(value:String):void{
-			_title = value;
-		}
-		
-		public function get table_name():String { return _table_name;}
-		public function set table_name(value:String):void{
-			_table_name = value;
-		}	
 		
 		
-		public function get isScratch():Boolean { return _isScratch;}
-		public function set isScratch(value:Boolean):void{
-			_isScratch = value;
-		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

@@ -19,8 +19,8 @@ button.saveAndMore=Save and add more
 #header
 header.uPackingList=uPackingList
 header.settings=Settings
-header.open=Open
-header.pack=Pack
+header.createList=Create List
+
 
 title.newList=New List
 title.newListDesc=create new packing list
@@ -31,6 +31,9 @@ title.packListDesc=pack the list - Business trip female (0%)
 title.create.list=Enter List name
 title.packList=Pack!
 title.tap=Tap to change image...
+title.createTitle=TITLE
+title.createTitleDesc=The title of your trip
+title.createDate=TRIP DATE
 
 #WelcomScreen
 welcomScreen.title=Welcome to uPackingList

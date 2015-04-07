@@ -249,6 +249,31 @@ package com.common{
 		}
 		
 		
+		public static function getEndDay(month:int, year:int):int {
+			switch(month) {
+				case 0:         // jan
+				case 2:         // mar
+				case 4:         // may
+				case 6:         // july
+				case 7:         // aug
+				case 9:         // oct
+				case 11:        // dec
+					return 31;
+					break;
+				
+				case 1:         // feb
+					if((year % 400 == 0) ||  ((year % 100 != 0) && (year % 4 == 0))) return 29;
+					return 28;
+					break;
+				
+				default:        
+					break;
+			}
+			// april, june, sept, nov.
+			return 30;
+		}
+		
+		
 	}
 }
 

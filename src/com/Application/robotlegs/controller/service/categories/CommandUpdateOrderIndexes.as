@@ -1,12 +1,25 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
-		
+package com.Application.robotlegs.controller.service.categories {
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.services.categories.IServiceCategories;
+	import com.Application.robotlegs.views.EventViewAbstract;
+	
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandUpdateOrderIndexes extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		[Inject]
+		public var event:EventViewAbstract;
 		
+		[Inject]
+		public var service:IServiceCategories;
+		
+		[Inject]
+		public var model:IModel;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -14,24 +27,27 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		public function VOCopyList(){
+		public function CommandUpdateOrderIndexes() {
+			super();
 		}
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override public function execute():void{
+			trace("update table");
+			
+			var pData:Vector.<VOPackedItem> = Vector.<VOPackedItem>((event.data));				
+			
+			
+			service.updateRows(pData,model.currentTableName.table_name);			
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -46,13 +62,11 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,27 +79,6 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }

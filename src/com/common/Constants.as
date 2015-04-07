@@ -13,6 +13,25 @@ package com.common{
 		public static const FILE_PATH:String = "appinfo";
 		
 		public static const DB_FILE_NAME:String = "data/info.db";
+		
+		public static const months:Array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+		
+		// name list
+		public static const CUSTOM_HEADER_NAME:String = "CUSTOM_HEADER_NAME";
+		public static const BUTTON_ADD_LIST:String = "BUTTON_ADD_LIST";
+		public static const BUTTON_MENU:String = "BUTTON_MENU";
+		public static const BUTTON_APPLY:String = "BUTTON_APPLY";
+		public static const BUTTON_CUSTOM_BACK:String = "BUTTON_CUSTOM_BACK";
+		public static const BUTTON_STEPPER_DOWN:String = "BUTTON_STEPPER_DOWN";
+		public static const BUTTON_STEPPER_UP:String = "BUTTON_STEPPER_UP";
+		public static const LEFT_MENU_NAME_LIST:String = "LEFT_MENU_NAME_LIST";
+		public static const INPUT_TEXT_TITLE_CUSTOM:String = "INPUT_TEXT_TITLE_CUSTOM";
+		public static const BUTTON_SEARCH_STYLE:String = "BUTTON_SEARCH_STYLE";
+		public static const BUTTON_EDIT_LIST_CKIN:String = "BUTTON_EDIT_LIST_CKIN";
+		public static const BUTTON_REMOVE_LIST_CKIN:String = "BUTTON_REMOVE_LIST_CKIN";
+		
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES

@@ -1,37 +1,48 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
-		
+package com.Application.robotlegs.controller.service.listCreate {
+	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.services.tableNames.IServiceTableNames;
+	import com.Application.robotlegs.views.createList.EventViewCreateList;
+	
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandCreateList extends Command {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
-		//---------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------		
+		[Inject]
+		public var event:EventViewCreateList;
 		
 		
+		[Inject]
+		public var service:IServiceTableNames;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		public function VOCopyList(){
+		public function CommandCreateList() {
+			super();
 		}
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		override public function execute():void {		
+			var pData:VOList = VOList(event.data);
+			
+			if(pData){
+				service.insert(pData);
+			}
+		}	
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -46,13 +57,11 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,27 +74,6 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }

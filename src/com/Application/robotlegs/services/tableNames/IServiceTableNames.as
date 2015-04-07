@@ -1,10 +1,10 @@
 package com.Application.robotlegs.services.tableNames
 {
-	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.model.vo.VOList;
 
 	public interface IServiceTableNames
 	{
 		function getTableNamesFirst():void
-		function insert(value:VOTableName):void
+		function insert(value:VOList):void
 	}
 }

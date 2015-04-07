@@ -1,5 +1,8 @@
 package com.Application {
+	import com.Application.robotlegs.controller.CommandGetCreatedLists;
 	import com.Application.robotlegs.controller.service.CommandServiceError;
+	import com.Application.robotlegs.controller.service.categories.CommandCreateCategoryItem;
+	import com.Application.robotlegs.controller.service.listCreate.CommandCreateList;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureSql;
 	import com.Application.robotlegs.controller.service.sql.init.CommandCreateDB;
@@ -21,6 +24,14 @@ package com.Application {
 	import com.Application.robotlegs.services.tableNames.EventServiceTableNames;
 	import com.Application.robotlegs.services.tableNames.IServiceTableNames;
 	import com.Application.robotlegs.services.tableNames.ServiceTableNames;
+	import com.Application.robotlegs.views.EventViewAbstract;
+	import com.Application.robotlegs.views.createList.EventViewCreateList;
+	import com.Application.robotlegs.views.createList.MediatorViewCreateList;
+	import com.Application.robotlegs.views.createList.ViewCreateList;
+	import com.Application.robotlegs.views.main.MediatorViewMain;
+	import com.Application.robotlegs.views.main.ViewMain;
+	import com.Application.robotlegs.views.menu.MediatorViewMenu;
+	import com.Application.robotlegs.views.menu.ViewMenu;
 	import com.http.robotlegs.events.EventServiceAbstract;
 	
 	import org.robotlegs.starling.mvcs.Context;
@@ -58,6 +69,9 @@ package com.Application {
 		override public function startup():void {
 			//Mediator MAP
 			mediatorMap.mapView(Main, MediatorMain);
+			mediatorMap.mapView(ViewMain, MediatorViewMain);
+			mediatorMap.mapView(ViewCreateList, MediatorViewCreateList);
+			mediatorMap.mapView(ViewMenu, MediatorViewMenu);
 		
 			
 			injector.mapSingletonOf(IModel, Model);
@@ -78,7 +92,11 @@ package com.Application {
 			commandMap.mapEvent(EventMain.CONFIGURE_MODEL, CommandConfigureModel, EventMain);
 			commandMap.mapEvent(EventServiceSettings.FIRST_SETTINGS_LOADED, CommandSettingConfigured, EventServiceSettings);
 			commandMap.mapEvent(EventServiceTableNames.FIRST_TABLE_NAMES_LOADED, CommandNamesTableConfigured, EventServiceTableNames);
-					
+		
+			commandMap.mapEvent(EventServiceTableNames.INSERTED, CommandCreateCategoryItem, EventServiceTableNames);
+			
+			commandMap.mapEvent(EventViewCreateList.CREATE_NEW_LIST, CommandCreateList, EventViewCreateList);
+			commandMap.mapEvent(EventViewAbstract.GET_CREATED_LISTS, CommandGetCreatedLists, EventViewAbstract);
 			
 			super.startup();
 		}

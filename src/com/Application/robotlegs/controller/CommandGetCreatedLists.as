@@ -1,5 +1,10 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
+package com.Application.robotlegs.controller{
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.views.EventViewAbstract;
+	
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandGetCreatedLists extends Command{
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -7,15 +12,17 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		[Inject]
+		public var model:IModel;
 		
+		[Inject]
+		public var event:EventViewAbstract;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -23,7 +30,9 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		public function VOCopyList(){
+		public function CommandGetCreatedLists()
+		{
+			super();
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -32,7 +41,10 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		
+		override public function execute():void{
+			var pFunction:Function = event.functionCallback;
+			pFunction(model.appLists);						
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -67,25 +79,5 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
 	}
 }

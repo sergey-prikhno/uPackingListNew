@@ -1,5 +1,6 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
+package com.Application.components.calendar{
+	
+	public class VODate {
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -13,19 +14,15 @@ package com.Application.robotlegs.model.vo{
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
-		
+		private var _date:String = "";
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		public function VOCopyList(){
+		public function VODate() {
+			
 		}
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
@@ -38,21 +35,21 @@ package com.Application.robotlegs.model.vo{
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		
+		public function get date():String { return _date;}
+		public function set date(value:String):void{
+			_date = value;
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,27 +62,6 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }

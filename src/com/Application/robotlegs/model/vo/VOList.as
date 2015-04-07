@@ -1,5 +1,6 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
+package com.Application.robotlegs.model.vo {
+	
+	public class VOList {
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -13,18 +14,18 @@ package com.Application.robotlegs.model.vo{
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
-		
+		private var _id:Number = 0;
+		private var _title:String = "";
+		private var _table_name:String = "";
+		private var _dateCreate:String = "";
+		private var _isScratch:Boolean = false;
+		private var _isOpenEdit:Boolean = false;
+		private var _isOpenRemove:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		public function VOCopyList(){
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -38,21 +39,63 @@ package com.Application.robotlegs.model.vo{
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
+
+		public function get isOpenRemove():Boolean
+		{
+			return _isOpenRemove;
+		}
+
+		public function set isOpenRemove(value:Boolean):void
+		{
+			_isOpenRemove = value;
+		}
+
+		public function get isOpenEdit():Boolean
+		{
+			return _isOpenEdit;
+		}
+
+		public function set isOpenEdit(value:Boolean):void
+		{
+			_isOpenEdit = value;
+		}
+
+		public function get dateCreate():String{return _dateCreate;}
+		public function set dateCreate(value:String):void{
+			_dateCreate = value;
+		}
+
+		public function get id():Number { return _id;}
+		public function set id(value:Number):void{
+			_id = value;
+		}	
+		
+		public function get title():String { return _title;}
+		public function set title(value:String):void{
+			_title = value;
+		}
+		
+		public function get table_name():String { return _table_name;}
+		public function set table_name(value:String):void{
+			_table_name = value;
+		}	
 		
 		
+		public function get isScratch():Boolean { return _isScratch;}
+		public function set isScratch(value:Boolean):void{
+			_isScratch = value;
+		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,27 +108,6 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }

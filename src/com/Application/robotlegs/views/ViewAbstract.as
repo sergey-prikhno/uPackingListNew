@@ -1,4 +1,6 @@
 package com.Application.robotlegs.views {
+	import com.common.Constants;
+	
 	import flash.display.Stage;
 	
 	import ch.ala.locale.LocaleManager;
@@ -28,7 +30,6 @@ package com.Application.robotlegs.views {
 		protected var _scaleWidth:Number = 1;
 		protected var _scaleHeight:Number = 1;
 		
-		protected var _baseBackground:Scale9Image;
 		
 		protected var _header:Header;
 		
@@ -53,10 +54,6 @@ package com.Application.robotlegs.views {
 		public function destroy():void{
 			trace("destroy");
 			
-			if(_baseBackground){				
-				removeChild(_baseBackground);
-				_baseBackground = null;
-			}
 		}				
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -71,10 +68,6 @@ package com.Application.robotlegs.views {
 			_scaleHeight = value;
 		}
 		
-		public function set baseBackground(value:Scale9Textures):void{
-			_baseBackground = new Scale9Image(value);	
-			invalidate(INVALIDATION_FLAG_STYLES);
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -92,6 +85,7 @@ package com.Application.robotlegs.views {
 			_nativeStage = Starling.current.nativeStage;
 						
 			_header = new Header();
+			_header.nameList.add(Constants.CUSTOM_HEADER_NAME);
 			addChild(_header);
 			
 			_initialize();	
@@ -103,16 +97,10 @@ package com.Application.robotlegs.views {
 			
 			var stylesInvalid:Boolean = this.isInvalid(INVALIDATION_FLAG_STYLES);
 			
-			if(stylesInvalid){			
-				if(_baseBackground && !contains(_baseBackground)){
-					_baseBackground.width = _nativeStage.fullScreenWidth;
-					_baseBackground.height = _nativeStage.fullScreenHeight;
-					addChildAt(_baseBackground, 0);
-				}
-			}
 			
 			if(_header){										
 				_header.width = _nativeStage.fullScreenWidth;
+				_header.height = int(88*_scaleHeight);
 			}
 						
 		}

@@ -1,6 +1,8 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
-		
+package com.Application.robotlegs.views.createList {
+	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.views.MediatorViewAbstract;
+	
+	public class MediatorViewCreateList extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -14,31 +16,38 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		public function VOCopyList(){
+		public function MediatorViewCreateList() 	{
+			super();
 		}
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		override public function onRegister():void{	
+			super.onRegister();
+			addViewListener(EventViewCreateList.CREATE_NEW_LIST, _handlerCreateList, EventViewCreateList);
+		}
 		
+		
+		override public function onRemove():void {
+			super.onRemove();
+			removeViewListener(EventViewCreateList.CREATE_NEW_LIST, _handlerCreateList, EventViewCreateList);
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public function get view():ViewCreateList{
+			return ViewCreateList(viewComponent);
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -46,13 +55,15 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------				
 		
+		private function _handlerCreateList(event:EventViewCreateList):void{
+			dispatch(new EventViewCreateList(EventViewCreateList.CREATE_NEW_LIST, false, VOList(event.data)));
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -65,27 +76,6 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }

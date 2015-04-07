@@ -1,6 +1,6 @@
 package com.Application.robotlegs.services.tableNames {
 	import com.Application.robotlegs.model.IModel;
-	import com.Application.robotlegs.model.vo.VOTableName;
+	import com.Application.robotlegs.model.vo.VOList;
 	import com.probertson.data.QueuedStatement;
 	import com.probertson.data.SQLRunner;
 	
@@ -28,7 +28,7 @@ package com.Application.robotlegs.services.tableNames {
 		//---------------------------------------------------------------------------------------------------------
 		private var _isFirstLoad:Boolean = false;
 		
-		private var _currentInsertedItem:VOTableName;
+		private var _currentInsertedItem:VOList;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -44,15 +44,15 @@ package com.Application.robotlegs.services.tableNames {
 		//---------------------------------------------------------------------------------------------------------
 		public function getTableNamesFirst():void{	
 			_isFirstLoad = true;
-			sqlRunner.execute(LOAD_NAMES_SQL, null, load_result, VOTableName);		
+			sqlRunner.execute(LOAD_NAMES_SQL, null, load_result, VOList);		
 		}	
 		
 		public function load():void {
-			sqlRunner.execute(LOAD_NAMES_SQL, null, load_result, VOTableName);
+			sqlRunner.execute(LOAD_NAMES_SQL, null, load_result, VOList);
 		}
 		
 		
-		public function insert(value:VOTableName):void {
+		public function insert(value:VOList):void {
 			_currentInsertedItem = value;
 			
 			var params:Object = new Object();
@@ -95,7 +95,7 @@ package com.Application.robotlegs.services.tableNames {
 		private function load_result(result:SQLResult):void	{
 							
 			if(result.data){
-				model.appLists = Vector.<VOTableName>(result.data);
+				model.appLists = Vector.<VOList>(result.data);
 			}
 			
 			if(_isFirstLoad){

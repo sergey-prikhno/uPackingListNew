@@ -1,6 +1,7 @@
-package com.Application.robotlegs.model.vo{
-	public class VOCopyList{
-		
+package com.Application.robotlegs.views.menu {
+	import com.Application.robotlegs.views.MediatorViewAbstract;
+	
+	public class MediatorViewMenu extends MediatorViewAbstract {		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -14,31 +15,38 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _listNew:VOList;
-		private var _listCopy:VOList;
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
-		public function VOCopyList(){
+		public function MediatorViewMenu() 	{
+			super();
 		}
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		override public function onRegister():void{	
+			super.onRegister();
+						
+		}
 		
+		
+		override public function onRemove():void {
+			super.onRemove();
+	
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public function get view():ViewMenu{
+			return ViewMenu(viewComponent);
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -46,12 +54,11 @@ package com.Application.robotlegs.model.vo{
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
+		//---------------------------------------------------------------------------------------------------------				
 		
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -65,27 +72,6 @@ package com.Application.robotlegs.model.vo{
 		// 
 		//  END CLASS  
 		// 
-		//---------------------------------------------------------------------------------------------------------
-		
-		public function get listCopy():VOList
-		{
-			return _listCopy;
-		}
-
-		public function set listCopy(value:VOList):void
-		{
-			_listCopy = value;
-		}
-
-		public function get listNew():VOList
-		{
-			return _listNew;
-		}
-
-		public function set listNew(value:VOList):void
-		{
-			_listNew = value;
-		}
-
+		//--------------------------------------------------------------------------------------------------------- 
 	}
 }
