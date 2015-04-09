@@ -76,6 +76,31 @@ package com.Application.components.calendar {
 			
 		}
 		
+		public function getCreateDate():String{
+			var pCreateDate:String = "";
+
+			var d:String = "";
+			var m:String = "";
+			var y:String = "";
+			d = _calendarStepperDay._label.text;
+			if(d.length == 1){
+				d = "0"+d;
+			}
+			for (var i:int = 0; i < Constants.months.length; i++){
+				if(Constants.months[i] == _calendarStepperMonth._label.text){
+					m = String(i+1);
+					if(m.length == 1){
+						m = "0"+m;
+					}
+					break;
+				}
+			}
+			y = _calendarStepperYear._label.text;
+			pCreateDate = d+"."+m+"."+y;
+			
+			return pCreateDate;
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   

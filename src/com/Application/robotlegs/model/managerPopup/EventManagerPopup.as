@@ -5,6 +5,7 @@ package com.Application.robotlegs.model.managerPopup {
 		
 		public static const TEST:String = "TEST";
 		public static const SET_NEW_LIST_NAME:String = "SET_NEW_LIST_NAME";
+		public static const ACCEPT_REMOVE_LIST:String = "ACCEPT_REMOVE_LIST";
 		
 		public function EventManagerPopup(type:String, bubbles:Boolean=false, data:Object=null)	{
 			super(type, bubbles, data);

@@ -249,6 +249,27 @@ package com.common{
 		}
 		
 		
+		public static function getCreateDate():String {
+			var pCreateDate:String = "";
+			var pDate:Date = new Date();
+			var d:String = "";
+			var m:String = "";
+			var y:String = "";
+			
+			if(pDate.date > 9){
+				d = String(pDate.date);
+			}else{
+				d = "0"+String(pDate.date);
+			}
+			if(pDate.month+1 > 9){
+				m = String(pDate.month+1);
+			}else{
+				m = "0"+String(pDate.month+1);
+			}
+			y = String(pDate.fullYear);
+			pCreateDate = d+"."+m+"."+y;
+			return pCreateDate;
+		}
 		public static function getEndDay(month:int, year:int):int {
 			switch(month) {
 				case 0:         // jan

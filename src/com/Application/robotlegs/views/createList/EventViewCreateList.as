@@ -3,7 +3,6 @@ package com.Application.robotlegs.views.createList {
 	
 	public class EventViewCreateList extends Event {
 				
-		public static const BACK_TO_MAIN_LIST_SCREEN:String = "BACK_TO_MAIN_LIST_SCREEN";	
 		public static const CREATE_NEW_LIST:String = "CREATE_NEW_LIST";	
 			
 		

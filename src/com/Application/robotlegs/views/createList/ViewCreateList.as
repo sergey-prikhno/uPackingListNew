@@ -1,6 +1,8 @@
 package com.Application.robotlegs.views.createList {
 	import com.Application.components.calendar.PopupCalendar;
+	import com.Application.robotlegs.model.vo.VOInfo;
 	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.common.Constants;
 	
@@ -195,15 +197,22 @@ package com.Application.robotlegs.views.createList {
 		// 
 		//---------------------------------------------------------------------------------------------------------				
 		private function _handlerButtonApply(event:Event):void{
-			var pVO:VOList = new VOList();
-				pVO.dateCreate = "";
-				pVO.title = _inputTitle.text;
-			
-			dispatchEvent(new EventViewCreateList(EventViewCreateList.CREATE_NEW_LIST, false, pVO));							
+			if(_inputTitle.text.length > 0 && _inputTitle.text.split(" ").join("").length > 0){
+				var pVO:VOList = new VOList();
+					pVO.date_create = _calendar.getCreateDate();
+					pVO.title = _inputTitle.text;
+				
+				dispatchEvent(new EventViewCreateList(EventViewCreateList.CREATE_NEW_LIST, false, pVO));
+			}else{
+				var pVOInfo:VOInfo = new VOInfo();
+					pVOInfo.infoTitle = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.warning");
+					pVOInfo.infoDesc = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "warning.listName");
+				dispatchEvent(new EventViewAbstract(EventViewAbstract.SHOW_INFO_POPUP, false, pVOInfo));
+			}
 		}
 	
 		private function _handlerButtonBack(event:Event):void{
-			dispatchEvent(new EventViewCreateList(EventViewCreateList.BACK_TO_MAIN_LIST_SCREEN));							
+			dispatchEvent(new EventViewAbstract(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN));							
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

@@ -18,7 +18,6 @@ package com.Application.robotlegs.model.vo {
 		private var _title:String = "";
 		private var _table_name:String = "";
 		private var _dateCreate:String = "";
-		private var _isScratch:Boolean = false;
 		private var _isOpenEdit:Boolean = false;
 		private var _isOpenRemove:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
@@ -60,8 +59,8 @@ package com.Application.robotlegs.model.vo {
 			_isOpenEdit = value;
 		}
 
-		public function get dateCreate():String{return _dateCreate;}
-		public function set dateCreate(value:String):void{
+		public function get date_create():String{return _dateCreate;}
+		public function set date_create(value:String):void{
 			_dateCreate = value;
 		}
 
@@ -80,11 +79,6 @@ package com.Application.robotlegs.model.vo {
 			_table_name = value;
 		}	
 		
-		
-		public function get isScratch():Boolean { return _isScratch;}
-		public function set isScratch(value:Boolean):void{
-			_isScratch = value;
-		}		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 

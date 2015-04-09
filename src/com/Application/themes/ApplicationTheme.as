@@ -7,6 +7,11 @@ package com.Application.themes {
 	import com.Application.robotlegs.views.createList.ViewCreateList;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.menu.ViewMenu;
+	import com.Application.robotlegs.views.packedList.ViewPackedList;
+	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
+	import com.Application.robotlegs.views.popups.PopupAbstract;
+	import com.Application.robotlegs.views.popups.info.PopupInfo;
+	import com.Application.robotlegs.views.popups.removeList.PopupRemoveList;
 	import com.common.Constants;
 	
 	import flash.geom.Rectangle;
@@ -30,11 +35,11 @@ package com.Application.themes {
 		
 		protected var loadingIndicator:Texture;
 
-		protected var iconArrow:Texture;
 		protected var iconEdit:Texture;
-		protected var iconBag:Texture;
-		protected var iconMark:Texture;
+		protected var iconUncheck:Texture;
+		protected var iconCheck:Texture;
 		protected var iconRemove:Texture;
+		protected var iconSearch:Texture;
 		
 		protected var iconPlus:Texture;
 		protected var iconMenu:Texture;
@@ -52,12 +57,19 @@ package com.Application.themes {
 		protected var efTitleCreateList:ElementFormat;
 		protected var efDateRendererList:ElementFormat;
 		protected var elementFormatLabelStepper:ElementFormat;
+		protected var efPopupInfoTitle:ElementFormat;
+		protected var efPopupInfoDesc:ElementFormat;
+		protected var efPopupRemoveDesc:ElementFormat;
+		protected var efTitleChildList:ElementFormat;
+		protected var efCountChildList:ElementFormat;
 				
 		protected var backgroundDarkGrey:Scale9Textures;
-		protected var backgroundRendererList:Scale9Textures;
+		protected var backgroundRendererListWhite:Scale9Textures;
+		protected var backgroundRendererListGrey:Scale9Textures;
 		protected var backgroundWhite:Scale9Textures;
 		protected var backgroundRendererListDel:Scale9Textures;
 		protected var backgroundRendererListEdit:Scale9Textures;
+		protected var buttonInfoPopup:Scale9Textures;
 				
 		
 		public function ApplicationTheme(assetsBasePath:String = null, assetManager:AssetManager = null) {
@@ -70,11 +82,11 @@ package com.Application.themes {
 			
 			this.loadingIndicator = this.atlas.getTexture("loading-white-indicator");
 			
-			this.iconArrow = this.atlas.getTexture("arrow-right");
 			this.iconEdit = this.atlas.getTexture("edit-icon");
-			this.iconBag = this.atlas.getTexture("icon-bag");
-			this.iconMark = this.atlas.getTexture("icon-mark");
+			this.iconUncheck = this.atlas.getTexture("icon-uncheked");
+			this.iconCheck = this.atlas.getTexture("icon-check");
 			this.iconRemove = this.atlas.getTexture("icon-remove");
+			this.iconSearch = this.atlas.getTexture("icon-search");
 		
 			this.iconPlus = this.atlas.getTexture("icon-plus");
 			this.iconMenu = this.atlas.getTexture("icon-menu");
@@ -86,10 +98,13 @@ package com.Application.themes {
 			this.textureButtonCalendarUp = this.atlas.getTexture("button-calendar-up");
 			this.textureButtonCalendarDown = this.atlas.getTexture("button-calendar-down");
 			this.backgroundDarkGrey = new Scale9Textures(this.atlas.getTexture("backgroung-dark-grey"),new Rectangle(10,10,20,20));
-			this.backgroundRendererList = new Scale9Textures(this.atlas.getTexture("background-renderer-list"),new Rectangle(10,10,20,20));
+			this.backgroundRendererListWhite = new Scale9Textures(this.atlas.getTexture("background-renderer-list"),new Rectangle(10,10,20,20));
+			this.backgroundRendererListGrey = new Scale9Textures(this.atlas.getTexture("background-renderer-list-grey"),new Rectangle(10,10,20,20));
 			this.backgroundWhite = new Scale9Textures(this.atlas.getTexture("backgroung-white"), DEFAULT_SCALE9_GRID);
 			this.backgroundRendererListDel = new Scale9Textures(this.atlas.getTexture("background-remove-button"), DEFAULT_SCALE9_GRID);
 			this.backgroundRendererListEdit = new Scale9Textures(this.atlas.getTexture("background-edit-button"), DEFAULT_SCALE9_GRID);
+			this.buttonInfoPopup = new Scale9Textures(this.atlas.getTexture("skin-button-info-popup"), DEFAULT_SCALE9_GRID);
+			
 			
 			
 		}
@@ -100,10 +115,15 @@ package com.Application.themes {
 			this.getStyleProviderForClass(LoadingIndicator).defaultStyleFunction = this.setLoadingIndicatorStyles;
 			this.getStyleProviderForClass(ViewMain).defaultStyleFunction = this.setViewMainStyles;
 			this.getStyleProviderForClass(ViewCreateList).defaultStyleFunction = this.setViewCreateListStyles;
+			this.getStyleProviderForClass(ViewPackedList).defaultStyleFunction = this.setViewPackedListStyles;
 			this.getStyleProviderForClass(ViewMenu).setFunctionForStyleName(Constants.LEFT_MENU_NAME_LIST, this.setViewMenuStyles);
 			this.getStyleProviderForClass(CalendarStepper).defaultStyleFunction = this.setCalendarStepperStyles;
 			this.getStyleProviderForClass(PopupCalendar).defaultStyleFunction = this.setPopupCalendarStyles;
 			this.getStyleProviderForClass(ItemrendererList).defaultStyleFunction = this.setItemrendererOpenListStyles;
+			this.getStyleProviderForClass(PopupAbstract).defaultStyleFunction = this.setPopupAbstractStyles;
+			this.getStyleProviderForClass(PopupInfo).defaultStyleFunction = this.setPopupInfoStyles;
+			this.getStyleProviderForClass(PopupRemoveList).defaultStyleFunction = this.setPopupRemoveListStyles;
+			this.getStyleProviderForClass(ItemRendererPackedList).defaultStyleFunction = this.setItemRendererPackedStyles;
 			
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Constants.CUSTOM_HEADER_NAME, this.setCustomHeaderStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_ADD_LIST, this.setCustomButtonAddStyles);
@@ -115,6 +135,9 @@ package com.Application.themes {
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(Constants.INPUT_TEXT_TITLE_CUSTOM, this.setCustomTextInputStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_REMOVE_LIST_CKIN, this.setButtonRemoveListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_EDIT_LIST_CKIN, this.setButtonEditListStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_INFO_POPUP, this.setButtonInfoPopupStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.SKIN_POPUP_WHITE_BUTTON, this.setButtonPopupWhiteStyles);
+			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_CUSTOM_SEARCH, this.setButtonCustomSearchStyles);
 			
 		}	
 	
@@ -123,11 +146,16 @@ package com.Application.themes {
 			
 			this.headerCustomElementFormat = new ElementFormat(this.regularFontDescription, this.extraLargeFontSize, WHITE_TEXT_COLOR);
 			this.labelMenuElementFormat = new ElementFormat(this.regularFontDescription, int(42*scaleWidth), WHITE_TEXT_COLOR);
-			this.efTitleRendererList = new ElementFormat(this.regularFontDescription, int(56*scaleHeight), 0x1c1c1c);
-			this.efPersentRendererList = new ElementFormat(this.regularFontDescription, int(40*scaleHeight), 0x262626);
+			this.efTitleRendererList = new ElementFormat(this.regularFontDescription, int(48*scaleHeight), 0x1c1c1c);
+			this.efPersentRendererList = new ElementFormat(this.regularFontDescription, int(34*scaleHeight), 0x262626);
 			this.efDateRendererList = new ElementFormat(this.regularFontDescription, int(24*scaleHeight), 0x929292);
 			this.efTitleCreateList = new ElementFormat(this.boldFontDescription, int(30*scaleHeight), 0x333333);
 			this.elementFormatLabelStepper = new ElementFormat(this.regularFontDescription, int(36*scaleHeight), 0x333333);
+			this.efPopupInfoTitle = new ElementFormat(this.boldFontDescription, int(36*scaleHeight), WHITE_TEXT_COLOR);
+			this.efPopupInfoDesc = new ElementFormat(this.regularFontDescription, int(28*scaleHeight), WHITE_TEXT_COLOR);
+			this.efPopupRemoveDesc = new ElementFormat(this.regularFontDescription, int(28*scaleHeight), 0x333333);
+			this.efTitleChildList = new ElementFormat(this.boldFontDescription, int(24*scaleHeight), 0x1c1c1c);
+			this.efCountChildList = new ElementFormat(this.regularFontDescription, int(34*scaleHeight), 0x1c1c1c);
 			
 		}
 		
@@ -136,6 +164,34 @@ package com.Application.themes {
 		// STYLES METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
+		protected function setItemRendererPackedStyles(renderer:ItemRendererPackedList):void{			
+			renderer.scaleWidth = scaleWidth;
+			renderer.iconArrow = iconArrowRight;
+			renderer.iconUncheck = iconUncheck;
+			renderer.iconCheck = iconCheck;
+			renderer.atlas = atlas;			
+			renderer.efTitleRendererList = efTitleRendererList;
+			renderer.efTitleChildList = efTitleChildList;
+			renderer.efCountChildList = efCountChildList;
+			renderer.backgroundRendererListWhite = backgroundRendererListWhite;
+			renderer.backgroundRendererListGrey = backgroundRendererListGrey;
+		}
+		
+		protected function setPopupAbstractStyles(view:PopupAbstract):void{
+			view.scaleHeight = scaleHeight;
+			view.scaleWidth = scaleWidth;	
+		}
+		
+		protected function setPopupInfoStyles(view:PopupInfo):void{
+			setPopupAbstractStyles(view);
+			view.efPopupInfoTitle = efPopupInfoTitle;
+			view.efPopupInfoDesc = efPopupInfoDesc;
+		}
+		protected function setPopupRemoveListStyles(view:PopupRemoveList):void{
+			setPopupAbstractStyles(view);
+			view.efPopupRemoveDesc = efPopupRemoveDesc;
+		}
 		
 		protected function setCustomTextInputStyles(input:TextInput):void{
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
@@ -166,7 +222,7 @@ package com.Application.themes {
 		
 		private function setItemrendererOpenListStyles(view:ItemrendererList):void{
 			view.scale = this.scaleWidth;
-			view.backgroundRendererList = backgroundRendererList;
+			view.backgroundRendererList = backgroundRendererListWhite;
 			view.efTitleRendererList = efTitleRendererList;
 			view.efPersentRendererList = efPersentRendererList;
 			view.efDateRendererList = efDateRendererList;
@@ -222,6 +278,18 @@ package com.Application.themes {
 			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
 			var pSize:Number = int(88*this.scaleWidth);
 			skinSelector.defaultValue = this.iconBack;
+			skinSelector.displayObjectProperties =
+				{
+					width: pSize,
+					height: pSize
+				};
+			button.stateToSkinFunction = skinSelector.updateValue;
+		}
+		
+		protected function setButtonCustomSearchStyles(button:Button):void{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			var pSize:Number = int(88*this.scaleWidth);
+			skinSelector.defaultValue = this.iconSearch;
 			skinSelector.displayObjectProperties =
 				{
 					width: pSize,
@@ -286,6 +354,38 @@ package com.Application.themes {
 			button.defaultIcon = new Image(iconEdit);
 		}
 		
+		protected function setButtonInfoPopupStyles(button:Button):void{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.buttonInfoPopup;
+			skinSelector.setValueForState(this.buttonInfoPopup, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.buttonInfoPopup, Button.STATE_DISABLED, false);
+			
+			skinSelector.displayObjectProperties =
+				{
+					width: this.controlSize,
+						height: this.controlSize,
+						textureScale: this.scale
+				};
+			button.stateToSkinFunction = skinSelector.updateValue;
+			button.defaultLabelProperties.elementFormat = new ElementFormat(this.boldFontDescription, int(24*scaleHeight), WHITE_TEXT_COLOR);
+		}
+		
+		protected function setButtonPopupWhiteStyles(button:Button):void{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundWhite;
+			skinSelector.setValueForState(this.backgroundWhite, Button.STATE_DOWN, false);
+			skinSelector.setValueForState(this.backgroundWhite, Button.STATE_DISABLED, false);
+			
+			skinSelector.displayObjectProperties =
+				{
+					width: this.controlSize,
+						height: this.controlSize,
+						textureScale: this.scale
+				};
+			button.stateToSkinFunction = skinSelector.updateValue;
+			button.defaultLabelProperties.elementFormat = new ElementFormat(this.boldFontDescription, int(24*scaleHeight), 0x333333);
+		}
+		
 		protected function setCustomHeaderStyles(header:Header):void{
 			header.minWidth = this.gridSize;
 			header.minHeight = this.gridSize;
@@ -310,6 +410,10 @@ package com.Application.themes {
 		protected function setViewCreateListStyles(view:ViewCreateList):void{
 			initializeViewAbstract(view);
 			view.efTitleCreateList = efTitleCreateList;
+		}
+		
+		protected function setViewPackedListStyles(view:ViewPackedList):void{
+			initializeViewAbstract(view);
 		}
 		
 		protected function setViewMenuStyles(view:ViewMenu):void{

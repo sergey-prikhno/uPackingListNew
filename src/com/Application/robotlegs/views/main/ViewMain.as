@@ -56,6 +56,13 @@ package com.Application.robotlegs.views.main {
 			super.destroy();
 		}
 		
+		public function updateRemovedLists(value:VOList):void{
+			//_list.dataProvider.removeAll();
+			//_list.dataProvider = null;
+			_list.dataProvider = new ListCollection(_items);
+			_list.validate();
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -87,10 +94,12 @@ package com.Application.robotlegs.views.main {
 			super._initialize();
 			
 			_verticalLayout = new VerticalLayout();
+			_verticalLayout.useVirtualLayout = false;
 						
 			if(!_list){
 				_list = new List();
-				_list.hasElasticEdges = true;
+				_list.hasElasticEdges = false;
+				_list.snapScrollPositionsToPixels = true;
 				_list.itemRendererType = ItemrendererList;
 				addChild(_list);
 				if(_items && _items.length > 0){

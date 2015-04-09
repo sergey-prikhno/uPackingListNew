@@ -29,7 +29,7 @@ package com.Application.components.calendar.stepper{
 		
 		private var _scale:Number = 1;
 		
-		private var _label:Label;
+		public var _label:Label;
 		
 		private var _buttonUp:Button;
 		private var _buttonDown:Button;

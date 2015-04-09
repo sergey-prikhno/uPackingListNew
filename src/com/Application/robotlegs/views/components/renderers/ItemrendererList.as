@@ -1,5 +1,6 @@
 package com.Application.robotlegs.views.components.renderers{
 	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.common.Constants;
 	
 	import flash.text.engine.ElementFormat;
@@ -62,7 +63,7 @@ package com.Application.robotlegs.views.components.renderers{
 		private var _buttonRemove:Button;
 		private var _buttonEdit:Button;
 		
-		
+		private var _isSwipe:Boolean = false;
 		private var _containerSwipe:Sprite;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -187,19 +188,9 @@ package com.Application.robotlegs.views.components.renderers{
 		public function get data():Object{return this._data;}
 		public function set data(value:Object):void{			
 			if(value){
-				/*if(value == this._data){
-					return;
-				}
-				this._data = null;
 				
-				this.touchPointID = -1;
-				this._data = VOList(value);				
-				this.invalidate(INVALIDATION_FLAG_DATA);*/
 				if(!value)	{
 					return;
-				}
-				if(_index == 13){
-					trace();
 				}
 				_data = VOList(value);			
 				invalidate(INVALIDATION_FLAG_DATA);
@@ -267,7 +258,7 @@ package com.Application.robotlegs.views.components.renderers{
 					}
 					_imageBG.width = actualWidth;
 				}
-				height = _imageBG.height;
+				height = int(_imageBG.height);
 				
 				if(_imageArrow){
 					if(_containerSwipe && !_containerSwipe.contains(_imageArrow)){
@@ -279,14 +270,14 @@ package com.Application.robotlegs.views.components.renderers{
 				}
 				
 				if(_labelDate){	
-					_labelDate.text = "12.04.2015"//_data.title.toUpperCase();
+					_labelDate.text = _data.date_create;
 					_labelDate.textRendererProperties.elementFormat = _efDateRendererList;
 					_labelDate.x = int(40*_scale);
-					_labelDate.y = actualHeight/4// - _labelDate.height/2;
+					_labelDate.y = actualHeight/4;
 					_labelDate.validate();
 				}
 				if(_labelPersent){
-					_labelPersent.text = String(_index);
+					_labelPersent.text = "0 %";
 					_labelPersent.textRendererProperties.elementFormat = _efPersentRendererList;
 					_labelPersent.validate();
 					_labelPersent.x = _imageArrow.x - int(40*_scale) - _labelPersent.width;
@@ -327,7 +318,7 @@ package com.Application.robotlegs.views.components.renderers{
 		}
 		
 		private function _showEdit(value:Boolean):void{
-			trace("remove "+value);
+			_isSwipe = true;
 			_data.isOpenEdit = value;
 			var pX:Number = 0;
 			if(value){
@@ -336,7 +327,7 @@ package com.Application.robotlegs.views.components.renderers{
 			}else{
 				_data.isOpenRemove = false;
 			}
-			var tween:Tween = new Tween(_containerSwipe, .2, Transitions.EASE_IN);
+			var tween:Tween = new Tween(_containerSwipe, Constants.TWEEN_SWIPE_SPEED, Transitions.EASE_IN);
 			tween.moveTo(pX,0);
 			tween.onComplete = _completeMove;
 			Starling.juggler.add(tween);
@@ -346,9 +337,11 @@ package com.Application.robotlegs.views.components.renderers{
 			if(_containerSwipe && !_containerSwipe.hasEventListener(TouchEvent.TOUCH)){
 				_containerSwipe.addEventListener(TouchEvent.TOUCH, _handlerTouchContainer);
 			}
+			_isSwipe = false;
 		}
 		
 		private function _showRemove(value:Boolean):void{
+			_isSwipe = true;
 			_data.isOpenRemove = value;
 			var pX:Number = 0;
 			if(value){
@@ -357,7 +350,7 @@ package com.Application.robotlegs.views.components.renderers{
 			}else{
 				_data.isOpenEdit = false;
 			}
-			var tween:Tween = new Tween(_containerSwipe, .2, Transitions.EASE_IN);
+			var tween:Tween = new Tween(_containerSwipe, Constants.TWEEN_SWIPE_SPEED, Transitions.EASE_IN);
 			tween.moveTo(pX,0);
 			tween.onComplete = _completeMove;
 			Starling.juggler.add(tween);
@@ -369,13 +362,13 @@ package com.Application.robotlegs.views.components.renderers{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		private function _handlerHideButton(event:EventRenderer):void{			
+		private function _handlerHideButton(event:EventRenderer):void{
 			if(_index == event.payload){
 				return;
 			}
 			if(_data && _data.isOpenEdit || _data.isOpenRemove){
 				if(_containerSwipe && _containerSwipe.x != 0){
-					var tween:Tween = new Tween(_containerSwipe, .2, Transitions.EASE_IN);
+					var tween:Tween = new Tween(_containerSwipe, Constants.TWEEN_SWIPE_SPEED, Transitions.EASE_IN);
 					tween.moveTo(0,0);
 					tween.onComplete = _completeMove;
 					Starling.juggler.add(tween);
@@ -425,11 +418,11 @@ package com.Application.robotlegs.views.components.renderers{
 		
 	
 		private function _handlerButtonRemove(event:Event):void{
-			
+			dispatchEvent(new EventViewMain(EventViewMain.SHOW_REMOVE_LIST_POPUP, true, _data));
 		}
 		
 		private function _handlerButtonEdit(event:Event):void{
-			
+
 		}
 		
 		protected function removedFromStageHandler(event:starling.events.Event):void{
@@ -437,12 +430,14 @@ package com.Application.robotlegs.views.components.renderers{
 		}
 		
 		protected function _touchHandler(event:TouchEvent):void{
-			/*var touch:Touch = event.getTouch(stage);
+			var touch:Touch = event.getTouch(stage);
 			if(touch){
 				if(touch.phase == TouchPhase.ENDED && !_owner.isScrolling) {
-					dispatchEvent(new EventViewAbstract(EventViewAbstract.GET_CATEGORY_DATA, true, _data));
+					if(!_data.isOpenEdit && !_data.isOpenRemove){
+						dispatchEvent(new EventViewMain(EventViewMain.GET_SELECTED_LIST_DATA, true, _data));
+					}
 				}
-			}*/
+			}
 			
 		}
 		

@@ -4,10 +4,16 @@ package com.Application.robotlegs.views {
 	public class EventViewAbstract extends Event {
 		
 		
+		
+		public static const SHOW_INFO_POPUP:String = "SHOW_INFO_POPUP";
+		public static const BACK_TO_MAIN_LIST_SCREEN:String = "BACK_TO_MAIN_LIST_SCREEN";
+		public static const GET_MODEL_LIST_DATA:String = "GET_PACKED_ITEMS";
+		
+		/////
+		///
 		public static const UPDATE_SETTINGS:String = "UPDATE_SETTINGS";
 		public static const GET_APP_SETTINGS:String = "GET_APP_SETTINGS";
 		public static const GET_CATEGORY_DATA:String = "GET_CATEGORY_DATA";
-		public static const GET_PACKED_ITEMS:String = "GET_PACKED_ITEMS";
 		
 		public static const UPDATE_DB_PACKED_ITEM:String = "UPDATE_DB_PACKED_ITEM";
 		public static const UPDATE_DB_ORDER_INDEXES:String = "UPDATE_DB_ORDER_INDEXES";		

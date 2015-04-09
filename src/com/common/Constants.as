@@ -16,6 +16,8 @@ package com.common{
 		
 		public static const months:Array = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 		
+		public static const TWEEN_SWIPE_SPEED:Number = 0.1;
+		
 		// name list
 		public static const CUSTOM_HEADER_NAME:String = "CUSTOM_HEADER_NAME";
 		public static const BUTTON_ADD_LIST:String = "BUTTON_ADD_LIST";
@@ -29,6 +31,9 @@ package com.common{
 		public static const BUTTON_SEARCH_STYLE:String = "BUTTON_SEARCH_STYLE";
 		public static const BUTTON_EDIT_LIST_CKIN:String = "BUTTON_EDIT_LIST_CKIN";
 		public static const BUTTON_REMOVE_LIST_CKIN:String = "BUTTON_REMOVE_LIST_CKIN";
+		public static const BUTTON_INFO_POPUP:String = "BUTTON_INFO_POPUP";
+		public static const SKIN_POPUP_WHITE_BUTTON:String = "SKIN_POPUP_WHITE_BUTTON";
+		public static const BUTTON_CUSTOM_SEARCH:String = "BUTTON_CUSTOM_SEARCH";
 		
 		
 		

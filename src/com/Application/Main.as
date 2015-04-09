@@ -2,12 +2,14 @@ package com.Application {
 	import com.Application.components.screenLoader.ScreenLoader;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
 	import com.Application.robotlegs.model.vo.VOScreenID;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.createList.EventViewCreateList;
 	import com.Application.robotlegs.views.createList.ViewCreateList;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.menu.ViewMenu;
+	import com.Application.robotlegs.views.packedList.EventViewPackedList;
+	import com.Application.robotlegs.views.packedList.ViewPackedList;
 	import com.Application.themes.ApplicationTheme;
 	import com.common.Constants;
 	
@@ -22,6 +24,7 @@ package com.Application {
 	import feathers.controls.StackScreenNavigatorItem;
 	import feathers.events.FeathersEventType;
 	import feathers.motion.Fade;
+	import feathers.motion.Slide;
 	
 	import org.robotlegs.starling.mvcs.Context;
 	
@@ -46,6 +49,7 @@ package com.Application {
 		//---------------------------------------------------------------------------------------------------------
 		public static const VIEW_MAIN:String = "VIEW_MAIN";		
 		public static const VIEW_CREATE_LIST:String = "VIEW_CREATE_LIST";		
+		public static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
 		
 		
 		private var _navigator:StackScreenNavigator;				
@@ -150,18 +154,25 @@ package com.Application {
 			var pMainItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
 				pMainItem.setFunctionForPushEvent(EventViewMain.SHOW_MAIN_MENU, _handlerAppMenu);
 				pMainItem.setScreenIDForPushEvent(EventViewMain.CREATE_NEW_LIST, VIEW_CREATE_LIST);
+				pMainItem.pushTransition = Slide.createSlideRightTransition();
 			this._navigator.addScreen(VIEW_MAIN, pMainItem);
 			
 			var pCreateListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewCreateList);
-				pCreateListItem.setScreenIDForPushEvent(EventViewCreateList.BACK_TO_MAIN_LIST_SCREEN, VIEW_MAIN);
+				pCreateListItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN, VIEW_MAIN);
+				pCreateListItem.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.addScreen(VIEW_CREATE_LIST, pCreateListItem);
 			
-			
+			var pListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);
+				pListItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN, VIEW_MAIN);
+				pListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN);
+				pListItem.pushTransition = Slide.createSlideLeftTransition();
+			this._navigator.addScreen(VIEW_PACKED_LIST, pListItem);
 			
 			this._navigator.rootScreenID = VIEW_MAIN;	
 			
 			this._navigator.pushTransition = Fade.createFadeInTransition();
 			this._navigator.popTransition = Fade.createFadeInTransition();	
+			
 			
 			
 			_screenLoader = new ScreenLoader();

@@ -1,10 +1,11 @@
 package com.Application.robotlegs.model {
 
+	import com.Application.Main;
 	import com.Application.robotlegs.model.vo.VOAppSettings;
-	import com.Application.robotlegs.model.vo.VOCopyList;
+	import com.Application.robotlegs.model.vo.VOList;
 	import com.Application.robotlegs.model.vo.VOOpenList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
-	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.model.vo.VOScreenID;
 	
 	import org.robotlegs.starling.mvcs.Actor;
 	
@@ -30,8 +31,6 @@ package com.Application.robotlegs.model {
 		private var _currentTableName:VOList;
 		
 		private var _voOpenList:VOOpenList;
-		
-		private var _copyingListData:VOList;
 		
 		private var _isMore:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
@@ -67,14 +66,6 @@ package com.Application.robotlegs.model {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 
-		public function get copyingListData():VOList{
-			return _copyingListData;
-		}
-
-		public function set copyingListData(value:VOList):void{
-			_copyingListData = value;
-		}
-
 		public function get voOpenList():VOOpenList{return _voOpenList;}
 		public function set voOpenList(value:VOOpenList):void{_voOpenList = value;}
 
@@ -84,16 +75,7 @@ package com.Application.robotlegs.model {
 		}
 
 		public function set newList(value:VOList):void{
-			if(value.isScratch && !_copyingListData){
-				dispatch(new EventModel(EventModel.INSERT_TABLE_NAMES, false, value)); 																
-			}
-			if(value.isScratch && _copyingListData){
-				var pVOCopy:VOCopyList = new VOCopyList();
-					pVOCopy.listCopy = _copyingListData;
-					pVOCopy.listNew = value;
-				dispatch(new EventModel(EventModel.COPY_LIST_FORM_EXISTING, false, pVOCopy)); 
-				_copyingListData = null;
-			}
+			dispatch(new EventModel(EventModel.INSERT_TABLE_NAMES, false, value)); 																
 		}
 						
 		public function get appSettings():VOAppSettings { return _VOAppSettings;}
@@ -113,9 +95,9 @@ package com.Application.robotlegs.model {
 			
 			
 			if(!_isMore){
-				/*var pVO:VOScreenID = new VOScreenID();
+				var pVO:VOScreenID = new VOScreenID();
 					pVO.screenID = Main.VIEW_PACKED_LIST;
-				dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));*/
+				dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
 			}
 			
 			_isMore = false;

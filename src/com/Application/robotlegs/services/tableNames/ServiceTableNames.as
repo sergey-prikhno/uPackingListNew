@@ -58,6 +58,7 @@ package com.Application.robotlegs.services.tableNames {
 			var params:Object = new Object();
 			params["title"] = value.title;
 			params["table_name"] = value.table_name;
+			params["date_create"] = value.date_create;
 			
 			
 			sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(INSERT_NAMES_SQL, params)]), addNew_result, database_error);
@@ -82,6 +83,7 @@ package com.Application.robotlegs.services.tableNames {
 				params["id"] = _currentInsertedItem.id;
 				params["title"] = _currentInsertedItem.title;
 				params["table_name"] = _currentInsertedItem.table_name;
+				params["date_create"] = _currentInsertedItem.date_create;
 										
 				
 				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(UPDATE_NAMES_SQL, params)]), updateAfterInsert_result, database_error);
