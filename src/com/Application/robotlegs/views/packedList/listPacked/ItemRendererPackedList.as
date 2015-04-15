@@ -40,7 +40,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		protected var _data:VOPackedItem;
-		protected var _owner:ListPacked;
+		protected var _owner:List;
 		protected var _index:int = -1;
 		protected var _backIndex:int = -1;
 		protected var _isSelected:Boolean = false;	
@@ -205,7 +205,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			if(_owner == value)	{
 				return;
 			}
-			_owner = ListPacked(value);	
+			_owner = List(value);	
 			if(_owner){
 				_owner.addEventListener(EventViewPackedList.UPDATE_PACKED_ITEM, _handlerUpdatePacked);
 				_owner.addEventListener(EventViewPackedList.UPDATE_STATE, _handlerUpdateState);
@@ -454,7 +454,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 							_iconArrow.rotation = deg2rad(90);							
 						} else {					
 							_data.isOpen = false;								
-							_iconArrow.rotation = deg2rad(0);															
+							_iconArrow.rotation = deg2rad(0);
+							_iconArrow.x = int(width - _iconArrow.width/2 - 40*_scaleWidth);
 						}	
 					}
 					isSelected = true;
@@ -495,7 +496,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				if(_data.isOpen){																	
 					_iconArrow.rotation = deg2rad(90);							
 				} else {														
-					_iconArrow.rotation = deg2rad(0);															
+					_iconArrow.rotation = deg2rad(0);
+					_iconArrow.x = int(width - _iconArrow.width/2 - 40*_scaleWidth);
 				}	
 			}
 		}

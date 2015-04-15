@@ -8,6 +8,7 @@ package com.Application.robotlegs.views {
 		public static const SHOW_INFO_POPUP:String = "SHOW_INFO_POPUP";
 		public static const BACK_TO_MAIN_LIST_SCREEN:String = "BACK_TO_MAIN_LIST_SCREEN";
 		public static const GET_MODEL_LIST_DATA:String = "GET_PACKED_ITEMS";
+		public static const GET_CURRENT_VOLIST:String = "GET_CURRENT_VOLIST";
 		
 		/////
 		///

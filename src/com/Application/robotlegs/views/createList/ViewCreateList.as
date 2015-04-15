@@ -43,7 +43,7 @@ package com.Application.robotlegs.views.createList {
 		private var _calendar:PopupCalendar;
 		
 		private var _quadBG:Quad;
-		
+		private var _voList:VOList;
 		private var _efTitleCreateList:ElementFormat;
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -113,6 +113,11 @@ package com.Application.robotlegs.views.createList {
 		}
 		
 		public function set efTitleCreateList(value:ElementFormat):void{_efTitleCreateList = value;}
+		
+		public function set voList(value:VOList):void{
+			_voList = value;
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -171,6 +176,9 @@ package com.Application.robotlegs.views.createList {
 			}
 			
 			if(_inputTitle){
+				if(_voList){
+					_inputTitle.text = _voList.title;
+				}
 				_inputTitle.prompt = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.createTitleDesc");
 				_inputTitle.width = _nativeStage.stageWidth - int(80*_scaleWidth);
 				_inputTitle.height = int(72*_scaleHeight);
@@ -188,6 +196,10 @@ package com.Application.robotlegs.views.createList {
 			
 			if(_calendar){
 				_calendar.y = _labelDate.y + _labelDate.height + int(60*_scaleWidth);
+				if(_voList){
+					_calendar.voList = _voList;
+					_calendar.validate();
+				}
 			}
 			
 		}
@@ -198,11 +210,16 @@ package com.Application.robotlegs.views.createList {
 		//---------------------------------------------------------------------------------------------------------				
 		private function _handlerButtonApply(event:Event):void{
 			if(_inputTitle.text.length > 0 && _inputTitle.text.split(" ").join("").length > 0){
-				var pVO:VOList = new VOList();
-					pVO.date_create = _calendar.getCreateDate();
-					pVO.title = _inputTitle.text;
-				
-				dispatchEvent(new EventViewCreateList(EventViewCreateList.CREATE_NEW_LIST, false, pVO));
+				if(!_voList){
+					var pVO:VOList = new VOList();
+						pVO.date_create = _calendar.getCreateDate();
+						pVO.title = _inputTitle.text;
+						pVO.isCreating = true;
+					
+					dispatchEvent(new EventViewCreateList(EventViewCreateList.CREATE_NEW_LIST, false, pVO));
+				}else{
+					dispatchEvent(new EventViewCreateList(EventViewCreateList.SHOW_VIEW_PACK_LIST));
+				}
 			}else{
 				var pVOInfo:VOInfo = new VOInfo();
 					pVOInfo.infoTitle = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "title.warning");
@@ -212,7 +229,7 @@ package com.Application.robotlegs.views.createList {
 		}
 	
 		private function _handlerButtonBack(event:Event):void{
-			dispatchEvent(new EventViewAbstract(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN));							
+			dispatchEvent(new EventViewCreateList(EventViewCreateList.BACK_TO_MAIN_SCREEN));							
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

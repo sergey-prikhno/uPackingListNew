@@ -4,7 +4,9 @@ package com.Application {
 	import com.Application.robotlegs.model.vo.VOScreenID;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.createList.EventViewCreateList;
 	import com.Application.robotlegs.views.createList.ViewCreateList;
+	import com.Application.robotlegs.views.list.ViewList;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.menu.ViewMenu;
@@ -40,16 +42,20 @@ package com.Application {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
-		private var _theme:ApplicationTheme;		
-		private var _locales:LocaleManager;		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
+		private var _theme:ApplicationTheme;		
+		private var _locales:LocaleManager;		
+		
 		public static const VIEW_MAIN:String = "VIEW_MAIN";		
 		public static const VIEW_CREATE_LIST:String = "VIEW_CREATE_LIST";		
 		public static const VIEW_PACKED_LIST:String = "VIEW_PACKED_LIST";		
+		public static const VIEW_LIST:String = "VIEW_LIST";		
 		
 		
 		private var _navigator:StackScreenNavigator;				
@@ -131,6 +137,12 @@ package com.Application {
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
+		private var pCreateListItem:StackScreenNavigatorItem;
+		private var pListItem:StackScreenNavigatorItem;
+		private var pMainItem:StackScreenNavigatorItem;
+		private var pPakingListItem:StackScreenNavigatorItem;
+		
 		private function _continueAppInit():void{
 			var pW:Number = Starling.current.stage.stageWidth;
 			var pH:Number = Starling.current.stage.stageHeight;
@@ -151,22 +163,28 @@ package com.Application {
 			_drawers.validate();
 			
 			
-			var pMainItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewMain);
+			pMainItem = new StackScreenNavigatorItem(ViewMain);
 				pMainItem.setFunctionForPushEvent(EventViewMain.SHOW_MAIN_MENU, _handlerAppMenu);
 				pMainItem.setScreenIDForPushEvent(EventViewMain.CREATE_NEW_LIST, VIEW_CREATE_LIST);
 				pMainItem.pushTransition = Slide.createSlideRightTransition();
 			this._navigator.addScreen(VIEW_MAIN, pMainItem);
 			
-			var pCreateListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewCreateList);
+			pCreateListItem = new StackScreenNavigatorItem(ViewCreateList);
 				pCreateListItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN, VIEW_MAIN);
+				pCreateListItem.setScreenIDForPushEvent(EventViewCreateList.SHOW_VIEW_PACK_LIST, VIEW_PACKED_LIST);
 				pCreateListItem.pushTransition = Slide.createSlideLeftTransition();
 			this._navigator.addScreen(VIEW_CREATE_LIST, pCreateListItem);
 			
-			var pListItem:StackScreenNavigatorItem = new StackScreenNavigatorItem(ViewPackedList);
-				pListItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN, VIEW_MAIN);
-				pListItem.setScreenIDForPushEvent(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN, VIEW_MAIN);
+			pPakingListItem = new StackScreenNavigatorItem(ViewPackedList);
+				pPakingListItem.setScreenIDForPushEvent(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN, VIEW_MAIN);
+				pPakingListItem.setScreenIDForPushEvent(EventViewPackedList.GOTO_VIEW_LIST, VIEW_LIST);
+				pPakingListItem.setFunctionForPushEvent(EventViewPackedList.BACK_TO_VIEW_CREATE, _backToViewCreate);
+				pPakingListItem.pushTransition = Slide.createSlideLeftTransition();
+			this._navigator.addScreen(VIEW_PACKED_LIST, pPakingListItem);
+	
+			pListItem = new StackScreenNavigatorItem(ViewList);
 				pListItem.pushTransition = Slide.createSlideLeftTransition();
-			this._navigator.addScreen(VIEW_PACKED_LIST, pListItem);
+			this._navigator.addScreen(VIEW_LIST, pListItem);
 			
 			this._navigator.rootScreenID = VIEW_MAIN;	
 			
@@ -185,6 +203,13 @@ package com.Application {
 		private function _handlerAppMenu():void{
 			_drawers.toggleLeftDrawer();
 		}
+		
+		private function _backToViewCreate():void{
+			pCreateListItem.pushTransition = Slide.createSlideRightTransition();
+			_navigator.pushScreen(VIEW_CREATE_LIST);
+			pCreateListItem.pushTransition = Slide.createSlideLeftTransition();
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  

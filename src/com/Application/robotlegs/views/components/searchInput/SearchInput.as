@@ -5,9 +5,11 @@ package com.Application.robotlegs.views.components.searchInput {
 	
 	import ch.ala.locale.LocaleManager;
 	
-	import feathers.controls.Button;
 	import feathers.controls.TextInput;
 	import feathers.core.FeathersControl;
+	import feathers.display.Scale9Image;
+	import feathers.skins.IStyleProvider;
+	import feathers.textures.Scale9Textures;
 	
 	import starling.core.Starling;
 	import starling.events.Event;
@@ -18,7 +20,7 @@ package com.Application.robotlegs.views.components.searchInput {
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
+		public static var globalStyleProvider:IStyleProvider;	
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -26,11 +28,15 @@ package com.Application.robotlegs.views.components.searchInput {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		private var _textInput:TextInput;
-		private var _buttonCancel:Button;
+
 		private var _nativeStage:Stage;
 		
 		private var _text:String = "";
 		protected var _resourceManager:LocaleManager;
+		
+		private var _scaleW:Number = 1;
+		private var _scaleH:Number = 1;
+		private var _imageBG:Scale9Image;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -44,18 +50,13 @@ package com.Application.robotlegs.views.components.searchInput {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+
 		public function destroy():void{
 			
 			if(_textInput){
 				_textInput.removeEventListener(Event.CHANGE, _handlerChange);
 				removeChild(_textInput);
 				_textInput = null;
-			}
-						 
-			if(_buttonCancel){
-				_buttonCancel.removeEventListener(Event.TRIGGERED, _handlerCancel);
-				removeChild(_buttonCancel);	
-				_buttonCancel = null;
 			}
 								
 		}		
@@ -71,7 +72,18 @@ package com.Application.robotlegs.views.components.searchInput {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		public function get text():String { return _text;}
-		
+		public function set scaleH(value:Number):void{_scaleH = value;}
+		public function set scaleW(value:Number):void{_scaleW = value;}
+		public function set backgroundGrey(value:Scale9Textures):void{
+			if(value){
+				if(!_imageBG){
+					_imageBG = new Scale9Image(value, _scaleH);
+				}
+			}
+		}
+		override protected function get defaultStyleProvider():IStyleProvider {
+			return SearchInput.globalStyleProvider;
+		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -84,39 +96,29 @@ package com.Application.robotlegs.views.components.searchInput {
 			_nativeStage = Starling.current.nativeStage;
 			
 			_textInput = new TextInput();
+			_textInput.nameList.add(Constants.INPUT_TEXT_SEARCH_CUSTOM);
 			_textInput.prompt = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "search.prompt");
 			_textInput.addEventListener(Event.CHANGE, _handlerChange);
 			addChild(_textInput);
 			
-			_buttonCancel = new Button();
-			_buttonCancel.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.cancel");
-			_buttonCancel.addEventListener(Event.TRIGGERED, _handlerCancel);
-			addChild(_buttonCancel);					
+								
 		}
 		
 		
 		override protected function draw():void{
 			super.draw();
+			if(_imageBG && !contains(_imageBG)){
+				_imageBG.width = _nativeStage.stageWidth;
+				addChildAt(_imageBG, 0);
+			}
+			height = int(_imageBG.height);
 			
-			if(width != 0){
-				
-				if(_textInput){
-					_textInput.x = 0;
-					_textInput.y = 0;
-					_textInput.width = int(width/1.2);
-					_textInput.height = height;
-					_textInput.validate();
-				}
-				
-				
-				if(_buttonCancel){
-					_buttonCancel.width = int(width - _textInput.width);
-					_buttonCancel.height = height;
-					_buttonCancel.validate();
-					_buttonCancel.x = int(width - _buttonCancel.width);
-					_buttonCancel.y = 0;
-				}
-								
+			if(_textInput){
+				_textInput.width = width - int(60*_scaleH);
+				_textInput.height = int(60*_scaleH);
+				_textInput.validate();
+				_textInput.x = int(width/2 - _textInput.width/2);
+				_textInput.y = int(height/2 - _textInput.height/2);
 			}
 		}
 		//--------------------------------------------------------------------------------------------------------- 
@@ -129,9 +131,6 @@ package com.Application.robotlegs.views.components.searchInput {
 			dispatchEvent(new EventSearchInput(EventSearchInput.CHANGE));
 		}
 		
-		private function _handlerCancel(event:Event):void{			
-			dispatchEvent(new EventSearchInput(EventSearchInput.CANCEL));
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

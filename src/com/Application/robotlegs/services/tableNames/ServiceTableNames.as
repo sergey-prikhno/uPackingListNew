@@ -21,12 +21,14 @@ package com.Application.robotlegs.services.tableNames {
 		
 		[Inject]
 		public var sqlRunner:SQLRunner;
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		private var _isFirstLoad:Boolean = false;
+		private var _isUpdatePersent:Boolean = false;
 		
 		private var _currentInsertedItem:VOList;
 		//--------------------------------------------------------------------------------------------------------- 
@@ -59,10 +61,27 @@ package com.Application.robotlegs.services.tableNames {
 			params["title"] = value.title;
 			params["table_name"] = value.table_name;
 			params["date_create"] = value.date_create;
+			params["persents"] = value.persents;
 			
 			
 			sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(INSERT_NAMES_SQL, params)]), addNew_result, database_error);
 		}
+		
+		public function updateListPersent(pList:VOList):void{
+			_isUpdatePersent = true;
+			
+			var params:Object = new Object();
+			params["id"] = pList.id;
+			params["title"] = pList.title;
+			params["table_name"] = pList.table_name;
+			params["date_create"] = pList.date_create;
+			params["persents"] = pList.persents;
+			
+			
+			sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(UPDATE_NAMES_SQL, params)]), updateAfterInsert_result, database_error);
+			
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -84,6 +103,7 @@ package com.Application.robotlegs.services.tableNames {
 				params["title"] = _currentInsertedItem.title;
 				params["table_name"] = _currentInsertedItem.table_name;
 				params["date_create"] = _currentInsertedItem.date_create;
+				params["persents"] = _currentInsertedItem.persents;
 										
 				
 				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(UPDATE_NAMES_SQL, params)]), updateAfterInsert_result, database_error);
@@ -112,23 +132,8 @@ package com.Application.robotlegs.services.tableNames {
 		
 		private function addNew_result(results:Vector.<SQLResult>):void {
 			var result:SQLResult = results[0];
-			
-						
-				
 			_updateTableName(result.lastInsertRowID);
 			trace("added");
-			
-			//dispatch(new EventServiceTableNames(EventServiceTableNames.INSERTED, false, _currentInsertedItem));
-			
-/*			if (result.rowsAffected > 0)
-			{
-				var contactId:Number = result.lastInsertRowID;
-				loadNewContact(contactId);
-			}
-			else
-			{
-				dispatch(new ContactServiceEvent(ContactServiceEvent.SAVED));
-			}*/
 		}
 		
 		
@@ -138,11 +143,11 @@ package com.Application.robotlegs.services.tableNames {
 		}
 		
 		private function updateAfterInsert_result(results:Vector.<SQLResult>):void	{
-			model.appLists.push(_currentInsertedItem);
-			
-			
-			
-			dispatch(new EventServiceTableNames(EventServiceTableNames.INSERTED, false, _currentInsertedItem));
+			if(!_isUpdatePersent){
+				model.appLists.push(_currentInsertedItem);
+				dispatch(new EventServiceTableNames(EventServiceTableNames.INSERTED, false, _currentInsertedItem));
+			}
+			_isUpdatePersent = false;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 

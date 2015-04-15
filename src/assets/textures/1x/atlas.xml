@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:43464f603367c52bbb41b52139db424f$ -->
+<!-- $TexturePacker:SmartUpdate:930a6a351efc0e87e043966940c9934b$ -->
 <TextureAtlas imagePath="atlas.png">
     <SubTexture name="background-disabled-skin" x="220" y="518" width="32" height="32"/>
     <SubTexture name="background-down-skin" x="238" y="484" width="32" height="32"/>
@@ -48,6 +48,7 @@
     <SubTexture name="icon-menu" x="480" y="386" width="30" height="22" frameX="-29" frameY="-33" frameWidth="88" frameHeight="88"/>
     <SubTexture name="icon-plus" x="480" y="354" width="30" height="30" frameX="-29" frameY="-29" frameWidth="88" frameHeight="88"/>
     <SubTexture name="icon-remove" x="160" y="420" width="23" height="23"/>
+    <SubTexture name="icon-search-grey" x="138" y="544" width="28" height="27"/>
     <SubTexture name="icon-search" x="108" y="544" width="28" height="28" frameX="-30" frameY="-30" frameWidth="88" frameHeight="88"/>
     <SubTexture name="icon-settings" x="350" y="92" width="80" height="80"/>
     <SubTexture name="icon-uncheked" x="200" y="192" width="56" height="56"/>

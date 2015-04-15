@@ -28,9 +28,6 @@ package com.common {
 		public static const SELECT_CATEGORY_TABLE_1:String = " SELECT id,parentId,isChild,label,isPacked,orderIndex,item_id,icon_id FROM main.";		
 		public static const SELECT_CATEGORY_TABLE_2:String = " ORDER BY orderIndex";
 		
-		public static const SELECT_COPY_TABLE_1:String = " SELECT id,parentId,isChild,label,isPacked,orderIndex,item_id,icon_id FROM main.";		
-		public static const SELECT_COPY_TABLE_2:String = " ORDER BY id";
-		
 		//Delete 		
 		public static const DELETE_CATEGORY_TABLE_1:String = " DELETE FROM main.";		
 		public static const DELETE_CATEGORY_TABLE_2:String = " WHERE id = :id";

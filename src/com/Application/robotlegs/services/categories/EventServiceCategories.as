@@ -8,6 +8,7 @@ package com.Application.robotlegs.services.categories {
 		public static const UPDATED:String = "UPDATED";
 		public static const REMOVED:String = "REMOVED";
 		public static const NEW_TABLE_CREATED:String = "NEW_TABLE_CREATED";
+		public static const ADD_PERSENTS_TO_TABLE:String = "ADD_PERSENTS_TO_TABLE";
 		
 		public function EventServiceCategories(type:String, bubbles:Boolean=false, data:Object=null) {
 			super(type, bubbles, data);

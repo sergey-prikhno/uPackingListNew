@@ -1,53 +1,48 @@
-package com.Application.robotlegs.views.createList {
-	import com.Application.robotlegs.model.vo.VOInfo;
-	import com.Application.robotlegs.model.vo.VOList;
-	import com.Application.robotlegs.model.vo.VOPackedItem;
+package com.Application.robotlegs.controller{
+	import com.Application.robotlegs.model.IModel;
 	import com.Application.robotlegs.views.EventViewAbstract;
-	import com.Application.robotlegs.views.MediatorViewAbstract;
 	
-	public class MediatorViewCreateList extends MediatorViewAbstract {		
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandGetCurrentVOListCallback extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		[Inject]
+		public var model:IModel;
 		
+		[Inject]
+		public var event:EventViewAbstract;		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewCreateList() 	{
+		
+		public function CommandGetCurrentVOListCallback()
+		{
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-			addViewListener(EventViewCreateList.CREATE_NEW_LIST, _handlerCreateList, EventViewCreateList);
-			addViewListener(EventViewAbstract.SHOW_INFO_POPUP, _handlerShowInfoPopup, EventViewAbstract);
-			addViewListener(EventViewCreateList.BACK_TO_MAIN_SCREEN, _handlerBackToMainScreen, EventViewCreateList);
-			
-			dispatch(new EventViewAbstract(EventViewAbstract.GET_CURRENT_VOLIST, false, null, _setVOList));
-			
-		}
-		
-		
-		override public function onRemove():void {
-			super.onRemove();
-			removeViewListener(EventViewCreateList.CREATE_NEW_LIST, _handlerCreateList, EventViewCreateList);
-			removeViewListener(EventViewAbstract.SHOW_INFO_POPUP, _handlerShowInfoPopup, EventViewAbstract);
-			removeViewListener(EventViewCreateList.BACK_TO_MAIN_SCREEN, _handlerBackToMainScreen, EventViewCreateList);
+		override public function execute():void{
+			var pFunction:Function = event.functionCallback;
+			pFunction(model.currentTableName);						
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
@@ -55,9 +50,7 @@ package com.Application.robotlegs.views.createList {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function get view():ViewCreateList{
-			return ViewCreateList(viewComponent);
-		}
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -65,27 +58,13 @@ package com.Application.robotlegs.views.createList {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
-		private function _setVOList(pTableName:VOList):void {
-			view.voList = pTableName;
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
-		//---------------------------------------------------------------------------------------------------------				
+		//---------------------------------------------------------------------------------------------------------
 		
-		private function _handlerShowInfoPopup(event:EventViewAbstract):void{
-			dispatch(new EventViewAbstract(EventViewAbstract.SHOW_INFO_POPUP, false, VOInfo(event.data)));
-		}
-		
-		private function _handlerBackToMainScreen(event:EventViewCreateList):void{
-			dispatch(new EventViewCreateList(EventViewCreateList.BACK_TO_MAIN_SCREEN));
-		}
-		
-		private function _handlerCreateList(event:EventViewCreateList):void{
-			dispatch(new EventViewCreateList(EventViewCreateList.CREATE_NEW_LIST, false, VOList(event.data)));
-		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -98,6 +77,7 @@ package com.Application.robotlegs.views.createList {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }

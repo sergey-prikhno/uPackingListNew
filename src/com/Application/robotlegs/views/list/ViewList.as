@@ -1,12 +1,12 @@
 package com.Application.robotlegs.views.list {
+	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.views.ViewAbstract;
-	import com.Application.robotlegs.views.components.renderers.ItemrendererList;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.common.Constants;
 	
 	import feathers.controls.Button;
 	import feathers.controls.List;
-	import feathers.controls.Scroller;
 	import feathers.data.ListCollection;
 	import feathers.layout.VerticalLayout;
 	import feathers.skins.IStyleProvider;
@@ -32,7 +32,9 @@ package com.Application.robotlegs.views.list {
 		//---------------------------------------------------------------------------------------------------------
 		
 		private var _list:List;
-		private var _collectionList:ListCollection;	
+		private var _items:Vector.<VOPackedItem>;
+		
+		private var _voList:VOList;
 		
 		private var _buttonBack:Button;	
 		private var _buttonSearch:Button;	
@@ -64,6 +66,35 @@ package com.Application.robotlegs.views.list {
 			return ViewList.globalStyleProvider;
 		}
 		
+		public function set tableName(value:VOList):void{
+			_voList = value;
+			
+			if(this._header){
+				this._header.title = _voList.title;
+			}
+		}
+		
+		public function set items(value:Vector.<VOPackedItem>):void{
+			
+			if(value){
+				if(!_items){
+					_items = new Vector.<VOPackedItem>;
+				}else{
+					_items = null;
+				}
+				var pLengthList:int = value.length;
+				for (var i:int = 0; i < pLengthList; i++){
+					var pCategory:VOPackedItem = VOPackedItem(value[i]);
+					if(pCategory.childrens.length > 0){
+						_items.push(pCategory);
+					}
+				}
+				if(_list && _items && _items.length > 0){
+					_list.dataProvider = new ListCollection(_items);
+				}
+			}
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -78,26 +109,30 @@ package com.Application.robotlegs.views.list {
 				_verticalLayout.useVirtualLayout = true;
 			}
 						
-			_collectionList = new ListCollection();
+			
 			
 			
 			if(!_list){
 				_list = new List();
 				_list.hasElasticEdges = true;
-				_list.itemRendererType = ItemrendererList;
-				_list.itemRendererProperties.isLongPressEnabled = true;
+				//_list.itemRendererType = ItemrendererList;
+				//_list.itemRendererProperties.isLongPressEnabled = true;
 				addChild(_list);
+				
+				if(_items && _items.length > 0){
+					_list.dataProvider = new ListCollection(_items);
+				}
 			}
 			
 			_buttonBack = new Button();
-			_buttonBack.addEventListener(Event.TRIGGERED, _handlerButtonAddList);
+			_buttonBack.addEventListener(Event.TRIGGERED, _handlerButtonBack);
 			_buttonBack.nameList.add(Constants.BUTTON_CUSTOM_BACK);
-			this._header.rightItems = new <DisplayObject>[this._buttonBack];
+			this._header.leftItems = new <DisplayObject>[this._buttonBack];
 			
 			_buttonSearch = new Button();
 			_buttonSearch.addEventListener(Event.TRIGGERED, _handlerButtonMenu);
-			_buttonSearch.nameList.add(Constants.BUTTON_SEARCH_STYLE);
-			this._header.leftItems = new <DisplayObject>[this._buttonSearch];
+			_buttonSearch.nameList.add(Constants.BUTTON_CUSTOM_SEARCH);
+			this._header.rightItems = new <DisplayObject>[this._buttonSearch];
 			
 			
 		}
@@ -105,12 +140,10 @@ package com.Application.robotlegs.views.list {
 		override protected function draw():void{
 			super.draw();
 			
-			if(_header){
-				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.uPackingList");				
-			}
+			
 			if(_list){
 				_list.layout = _verticalLayout;	
-				_list.dataProvider = _collectionList;
+			//	_list.dataProvider = _collectionList;
 				_list.width = _nativeStage.stageWidth;
 				_list.height = _nativeStage.stageHeight - _header.height;
 				_list.validate();
@@ -124,8 +157,8 @@ package com.Application.robotlegs.views.list {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------				
-		private function _handlerButtonAddList(event:Event):void{
-			dispatchEvent(new EventViewMain(EventViewMain.CREATE_NEW_LIST));							
+		private function _handlerButtonBack(event:Event):void{
+			dispatchEvent(new EventViewList(EventViewList.BACK_TO_MAIN_SCREEN));							
 		}
 	
 		private function _handlerButtonMenu(event:Event):void{

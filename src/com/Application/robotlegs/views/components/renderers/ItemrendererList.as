@@ -277,7 +277,7 @@ package com.Application.robotlegs.views.components.renderers{
 					_labelDate.validate();
 				}
 				if(_labelPersent){
-					_labelPersent.text = "0 %";
+					_labelPersent.text = String(_data.persents)+" %";
 					_labelPersent.textRendererProperties.elementFormat = _efPersentRendererList;
 					_labelPersent.validate();
 					_labelPersent.x = _imageArrow.x - int(40*_scale) - _labelPersent.width;
@@ -433,7 +433,7 @@ package com.Application.robotlegs.views.components.renderers{
 			var touch:Touch = event.getTouch(stage);
 			if(touch){
 				if(touch.phase == TouchPhase.ENDED && !_owner.isScrolling) {
-					if(!_data.isOpenEdit && !_data.isOpenRemove){
+					if(!_data.isOpenEdit && !_data.isOpenRemove && !_isSwipe){
 						dispatchEvent(new EventViewMain(EventViewMain.GET_SELECTED_LIST_DATA, true, _data));
 					}
 				}

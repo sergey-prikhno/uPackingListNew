@@ -1,5 +1,7 @@
 package com.Application {
+	import com.Application.robotlegs.controller.CommandBackToMainScreen;
 	import com.Application.robotlegs.controller.CommandGetCreatedLists;
+	import com.Application.robotlegs.controller.CommandGetCurrentVOListCallback;
 	import com.Application.robotlegs.controller.CommandGetListDataFunctionCallback;
 	import com.Application.robotlegs.controller.popup.CommandInfoPopup;
 	import com.Application.robotlegs.controller.popup.CommandRemovePopup;
@@ -8,6 +10,7 @@ package com.Application {
 	import com.Application.robotlegs.controller.service.categories.CommandSelectCategoryItem;
 	import com.Application.robotlegs.controller.service.categories.CommandUpdateCategoryItem;
 	import com.Application.robotlegs.controller.service.listCreate.CommandCreateList;
+	import com.Application.robotlegs.controller.service.listData.CommandAddPersentsToTable;
 	import com.Application.robotlegs.controller.service.removeList.CommandRemoveDBList;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureModel;
 	import com.Application.robotlegs.controller.service.sql.init.CommandConfigureSql;
@@ -19,6 +22,7 @@ package com.Application {
 	import com.Application.robotlegs.model.managerPopup.EventManagerPopup;
 	import com.Application.robotlegs.model.managerPopup.IManagerPopup;
 	import com.Application.robotlegs.model.managerPopup.ManagerPopup;
+	import com.Application.robotlegs.services.categories.EventServiceCategories;
 	import com.Application.robotlegs.services.categories.IServiceCategories;
 	import com.Application.robotlegs.services.categories.ServiceCategories;
 	import com.Application.robotlegs.services.categoriesDefault.IServiceCategoriesDefault;
@@ -39,6 +43,8 @@ package com.Application {
 	import com.Application.robotlegs.views.createList.EventViewCreateList;
 	import com.Application.robotlegs.views.createList.MediatorViewCreateList;
 	import com.Application.robotlegs.views.createList.ViewCreateList;
+	import com.Application.robotlegs.views.list.MediatorViewList;
+	import com.Application.robotlegs.views.list.ViewList;
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.Application.robotlegs.views.main.MediatorViewMain;
 	import com.Application.robotlegs.views.main.ViewMain;
@@ -88,6 +94,7 @@ package com.Application {
 			mediatorMap.mapView(ViewCreateList, MediatorViewCreateList);
 			mediatorMap.mapView(ViewMenu, MediatorViewMenu);
 			mediatorMap.mapView(ViewPackedList, MediatorViewPackedList);
+			mediatorMap.mapView(ViewList, MediatorViewList);
 		
 			
 			injector.mapSingletonOf(IModel, Model);
@@ -117,6 +124,9 @@ package com.Application {
 			commandMap.mapEvent(EventViewAbstract.GET_MODEL_LIST_DATA, CommandGetListDataFunctionCallback, EventViewAbstract);
 			commandMap.mapEvent(EventViewAbstract.GET_CATEGORY_DATA, CommandSelectCategoryItem, EventViewAbstract);
 			commandMap.mapEvent(EventViewAbstract.UPDATE_DB_PACKED_ITEM, CommandUpdateCategoryItem, EventViewAbstract);
+			commandMap.mapEvent(EventServiceCategories.ADD_PERSENTS_TO_TABLE, CommandAddPersentsToTable, EventServiceCategories);
+			commandMap.mapEvent(EventViewAbstract.GET_CURRENT_VOLIST, CommandGetCurrentVOListCallback, EventViewAbstract);
+			commandMap.mapEvent(EventViewCreateList.BACK_TO_MAIN_SCREEN, CommandBackToMainScreen, EventViewCreateList);
 			
 			//popup
 			commandMap.mapEvent(EventViewAbstract.SHOW_INFO_POPUP, CommandInfoPopup, EventViewAbstract);

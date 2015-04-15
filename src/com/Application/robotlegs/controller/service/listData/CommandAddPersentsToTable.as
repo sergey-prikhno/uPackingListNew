@@ -1,9 +1,12 @@
-package com.Application.robotlegs.views {
+package com.Application.robotlegs.controller.service.listData{
 	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.services.categories.EventServiceCategories;
+	import com.Application.robotlegs.services.tableNames.IServiceTableNames;
 	
-	import org.robotlegs.starling.mvcs.Mediator;
+	import org.robotlegs.starling.mvcs.Command;
 	
-	public class MediatorViewAbstract extends Mediator {		
+	public class CommandAddPersentsToTable extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -11,41 +14,43 @@ package com.Application.robotlegs.views {
 		//---------------------------------------------------------------------------------------------------------
 		
 		[Inject]
-		public var model:IModel;
+		public var event:EventServiceCategories;
 		
+		[Inject]
+		public var service:IServiceTableNames;
+		
+		[Inject]
+		public var model:IModel;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewAbstract() 	{
+		
+		public function CommandAddPersentsToTable()
+		{
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
+		override public function execute():void{
 			
-			addViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
-			addViewListener(EventViewAbstract.CREATE_NEW_LIST, _handlerCreateNewList, EventViewAbstract);
+			model.currentTableName.persents = Number(event.data);
+			
+			service.updateListPersent(model.currentTableName);			
 		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			removeViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
-			removeViewListener(EventViewAbstract.CREATE_NEW_LIST, _handlerCreateNewList, EventViewAbstract);
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -59,18 +64,14 @@ package com.Application.robotlegs.views {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerUpdateSettings(event:EventViewAbstract):void{
-			dispatch(event);
-		}
 		
-		private function _handlerCreateNewList(event:EventViewAbstract):void{
-			dispatch(new EventViewAbstract(EventViewAbstract.ADD_NEW_LIST));
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
@@ -82,6 +83,7 @@ package com.Application.robotlegs.views {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }

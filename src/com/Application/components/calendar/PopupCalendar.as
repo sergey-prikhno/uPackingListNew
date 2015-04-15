@@ -1,6 +1,7 @@
 package com.Application.components.calendar {
 	import com.Application.components.calendar.stepper.CalendarStepper;
 	import com.Application.components.calendar.stepper.EventCalendarStepper;
+	import com.Application.robotlegs.model.vo.VOList;
 	import com.common.Constants;
 	import com.common.Utils;
 	
@@ -32,6 +33,8 @@ package com.Application.components.calendar {
 		protected var _day:int;
 		protected var _month:int;
 		protected var _year:int;
+		
+		private var _voList:VOList;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -45,7 +48,6 @@ package com.Application.components.calendar {
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-
 
 		public function destroy():void{
 			
@@ -112,6 +114,14 @@ package com.Application.components.calendar {
 			return PopupCalendar.globalStyleProvider;
 		}
 		public function set nativeWidth(value:Number):void{	_nativeWidth = value;}
+		public function get voList():VOList{return _voList;}
+		public function set voList(value:VOList):void{
+			_voList = value;
+			if(_voList){
+				draw();
+			}
+		}
+
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
@@ -176,10 +186,17 @@ package com.Application.components.calendar {
 		}
 		
 		private function _getCurrentDate():void{
-			var pDate:Date = new Date();
-			_month = pDate.month;
-			_day = pDate.date;
-			_year = pDate.fullYear;
+			if(!_voList){
+				var pDate:Date = new Date();
+				_month = pDate.month;
+				_day = pDate.date;
+				_year = pDate.fullYear;
+			}else{
+				var pStrDate:Array = _voList.date_create.split(".");
+				_day = Number(pStrDate[0]);
+				_month = Number(pStrDate[1])-1;
+				_year = pStrDate[2];
+			}
 		}
 		
 		private function _updateSteppers():void{

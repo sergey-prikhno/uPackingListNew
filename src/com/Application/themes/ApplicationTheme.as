@@ -4,7 +4,9 @@ package com.Application.themes {
 	import com.Application.components.loadingIndicator.LoadingIndicator;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererList;
+	import com.Application.robotlegs.views.components.searchInput.SearchInput;
 	import com.Application.robotlegs.views.createList.ViewCreateList;
+	import com.Application.robotlegs.views.list.ViewList;
 	import com.Application.robotlegs.views.main.ViewMain;
 	import com.Application.robotlegs.views.menu.ViewMenu;
 	import com.Application.robotlegs.views.packedList.ViewPackedList;
@@ -40,6 +42,7 @@ package com.Application.themes {
 		protected var iconCheck:Texture;
 		protected var iconRemove:Texture;
 		protected var iconSearch:Texture;
+		protected var iconSearchGrey:Texture;
 		
 		protected var iconPlus:Texture;
 		protected var iconMenu:Texture;
@@ -87,6 +90,7 @@ package com.Application.themes {
 			this.iconCheck = this.atlas.getTexture("icon-check");
 			this.iconRemove = this.atlas.getTexture("icon-remove");
 			this.iconSearch = this.atlas.getTexture("icon-search");
+			this.iconSearchGrey = this.atlas.getTexture("icon-search-grey");
 		
 			this.iconPlus = this.atlas.getTexture("icon-plus");
 			this.iconMenu = this.atlas.getTexture("icon-menu");
@@ -116,6 +120,7 @@ package com.Application.themes {
 			this.getStyleProviderForClass(ViewMain).defaultStyleFunction = this.setViewMainStyles;
 			this.getStyleProviderForClass(ViewCreateList).defaultStyleFunction = this.setViewCreateListStyles;
 			this.getStyleProviderForClass(ViewPackedList).defaultStyleFunction = this.setViewPackedListStyles;
+			this.getStyleProviderForClass(ViewList).defaultStyleFunction = this.setViewListStyles;
 			this.getStyleProviderForClass(ViewMenu).setFunctionForStyleName(Constants.LEFT_MENU_NAME_LIST, this.setViewMenuStyles);
 			this.getStyleProviderForClass(CalendarStepper).defaultStyleFunction = this.setCalendarStepperStyles;
 			this.getStyleProviderForClass(PopupCalendar).defaultStyleFunction = this.setPopupCalendarStyles;
@@ -124,6 +129,7 @@ package com.Application.themes {
 			this.getStyleProviderForClass(PopupInfo).defaultStyleFunction = this.setPopupInfoStyles;
 			this.getStyleProviderForClass(PopupRemoveList).defaultStyleFunction = this.setPopupRemoveListStyles;
 			this.getStyleProviderForClass(ItemRendererPackedList).defaultStyleFunction = this.setItemRendererPackedStyles;
+			this.getStyleProviderForClass(SearchInput).defaultStyleFunction = this.setSearchInputStyles;
 			
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Constants.CUSTOM_HEADER_NAME, this.setCustomHeaderStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_ADD_LIST, this.setCustomButtonAddStyles);
@@ -133,6 +139,7 @@ package com.Application.themes {
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_STEPPER_UP, this.setButtonStepperUpStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_STEPPER_DOWN, this.setButtonStepperDownStyles);
 			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(Constants.INPUT_TEXT_TITLE_CUSTOM, this.setCustomTextInputStyles);
+			this.getStyleProviderForClass(TextInput).setFunctionForStyleName(Constants.INPUT_TEXT_SEARCH_CUSTOM, this.setCustomTextInputSearchStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_REMOVE_LIST_CKIN, this.setButtonRemoveListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_EDIT_LIST_CKIN, this.setButtonEditListStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_INFO_POPUP, this.setButtonInfoPopupStyles);
@@ -164,6 +171,12 @@ package com.Application.themes {
 		// STYLES METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
+		
+		protected function setSearchInputStyles(view:SearchInput):void{			
+			view.scaleW = this.scaleWidth;
+			view.scaleH = this.scaleHeight;
+			view.backgroundGrey = backgroundRendererListGrey;
+		}
 		
 		protected function setItemRendererPackedStyles(renderer:ItemRendererPackedList):void{			
 			renderer.scaleWidth = scaleWidth;
@@ -218,6 +231,35 @@ package com.Application.themes {
 			
 			input.promptProperties.elementFormat = this.lightElementFormat;
 			input.promptProperties.disabledElementFormat = this.disabledElementFormat;
+		}
+		
+		protected function setCustomTextInputSearchStyles(input:TextInput):void{
+			var skinSelector:SmartDisplayObjectStateValueSelector = new SmartDisplayObjectStateValueSelector();
+			skinSelector.defaultValue = this.backgroundWhite;
+			skinSelector.displayObjectProperties =
+				{
+					width: this.wideControlSize,
+						height: this.controlSize,
+						textureScale: this.scale
+				};
+			input.stateToSkinFunction = skinSelector.updateValue;
+			
+			input.minWidth = this.controlSize;
+			input.minHeight = this.controlSize;
+			input.minTouchWidth = this.gridSize;
+			input.minTouchHeight = this.gridSize;
+			input.gap = this.smallGutterSize;
+			input.padding = this.smallGutterSize;
+			
+			input.textEditorProperties.fontFamily = "Helvetica";
+			input.textEditorProperties.fontSize = int(32*scaleHeight);
+			input.textEditorProperties.color = 0x333333;
+			input.textEditorProperties.disabledColor = DISABLED_TEXT_COLOR;
+			
+			input.promptProperties.elementFormat = this.lightElementFormat;
+			input.promptProperties.disabledElementFormat = this.disabledElementFormat;
+			input.defaultIcon = new Image(iconSearchGrey);
+			input.defaultIcon.scaleX = input.defaultIcon.scaleY = scaleHeight; 
 		}
 		
 		private function setItemrendererOpenListStyles(view:ItemrendererList):void{
@@ -413,6 +455,10 @@ package com.Application.themes {
 		}
 		
 		protected function setViewPackedListStyles(view:ViewPackedList):void{
+			initializeViewAbstract(view);
+		}
+		
+		protected function setViewListStyles(view:ViewList):void{
 			initializeViewAbstract(view);
 		}
 		

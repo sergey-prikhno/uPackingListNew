@@ -2,18 +2,19 @@ package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.model.vo.VOList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.components.searchInput.EventSearchInput;
+	import com.Application.robotlegs.views.components.searchInput.SearchInput;
 	import com.Application.robotlegs.views.packedList.listPacked.CustomLayout;
 	import com.Application.robotlegs.views.packedList.listPacked.ItemRendererPackedList;
-	import com.Application.robotlegs.views.packedList.listPacked.ListPacked;
 	import com.common.Constants;
 	
 	import feathers.controls.Button;
+	import feathers.controls.List;
 	import feathers.controls.renderers.IListItemRenderer;
 	import feathers.data.ListCollection;
 	import feathers.skins.IStyleProvider;
 	
 	import starling.display.DisplayObject;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	
 	public class ViewPackedList extends ViewAbstract {				
@@ -29,20 +30,18 @@ package com.Application.robotlegs.views.packedList {
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------		
-		private var _list:ListPacked;
+		private var _list:List;
 		private var _verticalLayout:CustomLayout;
 		
 		private var _buttonBack:Button;
-		private var _buttonSearch:Button;
+		private var _buttonApply:Button;
 		
 		private var _items:Vector.<VOPackedItem>;
 		
 		private var _voList:VOList;
 		
-		private var _containerAddButtons:Sprite;
+		private var _search:SearchInput;
 		
-		private var _buttonAddCategory:Button;
-		private var _buttonAddItem:Button;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -64,27 +63,28 @@ package com.Application.robotlegs.views.packedList {
 				_list = null;
 			}
 			
-			if(_buttonSearch){
-				_buttonSearch.removeEventListener(Event.TRIGGERED, _handlerButtonSearch);
+			if(_buttonApply){
+				_buttonApply.nameList.remove(Constants.BUTTON_APPLY);
+				_buttonApply.removeEventListener(Event.TRIGGERED, _handlerButtonApply);
+				removeChild(_buttonApply);
+				_buttonApply = null;
 			}			
-						
-			if(_buttonAddCategory){
-				_buttonAddCategory.removeEventListener(Event.TRIGGERED, _handlerAddNewCategory);
-				_containerAddButtons.removeChild(_buttonAddCategory);	
-			}
-			 
-			if(_buttonAddItem){
-				_buttonAddItem.removeEventListener(Event.TRIGGERED, _handlerAddNewItem);
-				_containerAddButtons.removeChild(_buttonAddItem);
-				_buttonAddItem = null;
-			}
 			
-			if(_containerAddButtons){
-				removeChild(_containerAddButtons);
-				_containerAddButtons = null;			
+			if(_buttonBack){
+				_buttonBack.nameList.remove(Constants.BUTTON_CUSTOM_BACK);
+				_buttonBack.removeEventListener(Event.TRIGGERED, _handlerBackbutton);
+				removeChild(_buttonBack);
+				_buttonBack = null;
 			}
 			
 			_verticalLayout = null;
+			
+			if(_search){
+				_search.destroy();
+				removeChild(_search);
+				_search = null;
+			}
+			
 			
 			super.destroy();			
 		}
@@ -157,29 +157,33 @@ package com.Application.robotlegs.views.packedList {
 		public function set tableName(value:VOList):void{
 			_voList = value;
 			
-			if(this._header){
+			/*if(this._header){
 				this._header.title = _voList.title;
-			}
+			}*/
+		}
+		override protected function get defaultStyleProvider():IStyleProvider {
+			return ViewPackedList.globalStyleProvider;
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED METHODS 
 		//
 		//---------------------------------------------------------------------------------------------------------
-		override protected function get defaultStyleProvider():IStyleProvider {
-			return ViewPackedList.globalStyleProvider;
-		}
 		
 		override protected function _initialize():void{			
 			super._initialize();
 
+			_search = new SearchInput();	
+			_search.addEventListener(EventSearchInput.CHANGE, _handlerChange);
+			addChild(_search);			
 			
 			_verticalLayout = new CustomLayout();
 			_verticalLayout.useVirtualLayout = true;			
 			
-			_list = new ListPacked();			
+			_list = new List();			
 			_list.layout = _verticalLayout;	
 			_list.width = _nativeStage.stageWidth;
+			_list.hasElasticEdges = false;
 			_list.itemRendererFactory = function():IListItemRenderer{
 				var renderer:ItemRendererPackedList = new ItemRendererPackedList();
 				
@@ -200,55 +204,63 @@ package com.Application.robotlegs.views.packedList {
 			_buttonBack.nameList.add(Constants.BUTTON_CUSTOM_BACK);
 			_buttonBack.addEventListener(Event.TRIGGERED, _handlerBackbutton);
 						
-			_buttonSearch = new Button();
-			_buttonSearch.nameList.add(Constants.BUTTON_CUSTOM_SEARCH);
-			_buttonSearch.addEventListener(Event.TRIGGERED, _handlerButtonSearch);
+			_buttonApply = new Button();
+			_buttonApply.nameList.add(Constants.BUTTON_APPLY);
+			_buttonApply.addEventListener(Event.TRIGGERED, _handlerButtonApply);
 			
 			var pLeftButtons:Vector.<DisplayObject> = new Vector.<DisplayObject>;
 			pLeftButtons.push(_buttonBack);
 			
 			var pRightButtons:Vector.<DisplayObject> = new Vector.<DisplayObject>;
-			pRightButtons.push(_buttonSearch);
+			pRightButtons.push(_buttonApply);
 			
 			
 			this._header.leftItems = pLeftButtons;
 			this._header.rightItems = pRightButtons;
 			
-			_containerAddButtons = new Sprite();
-			addChild(_containerAddButtons);
-			_containerAddButtons.visible = false;
-			
-			
-			_buttonAddCategory = new Button();
-			_buttonAddCategory.width = int(_nativeStage.fullScreenWidth*0.9);
-			_buttonAddCategory.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.addnewCategory");
-			_buttonAddCategory.addEventListener(Event.TRIGGERED, _handlerAddNewCategory);
-			_containerAddButtons.addChild(_buttonAddCategory);
-			_buttonAddCategory.validate();
-			
-			_buttonAddItem = new Button();
-			_buttonAddItem.width = int(_nativeStage.fullScreenWidth*0.9);
-			_buttonAddItem.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.addnewItem");
-			_buttonAddItem.addEventListener(Event.TRIGGERED, _handlerAddNewItem);
-			_containerAddButtons.addChild(_buttonAddItem);
-			_buttonAddItem.validate();
-			_buttonAddItem.y = int(_buttonAddCategory.height*1.1);
-			
-			_containerAddButtons.x = int(_nativeStage.fullScreenWidth/2 - _containerAddButtons.width/2);
 			
 		}
 		
 		
 		override protected function draw():void{
 			super.draw();
-						
+					
+			if(_header){
+				_header.title = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "header.createList");				
+			}
+			
+			if(_search){
+				_search.width = _nativeStage.stageWidth;
+				_search.validate();
+				_search.y = _header.height;
+			}
+			
 			if(_list && !_list.dataProvider){															
-				_list.y = _header.height;
-				_list.height = int(_nativeStage.fullScreenHeight- _header.height);
+				_list.y = _search.y + _search.height;
+				_list.height = int(_nativeStage.fullScreenHeight - _search.y - _search.height);
 				_list.validate();
 			}						
 						
 		}
+		
+		private function _backToList():void{
+			if(_list && _items && _items.length > 0){
+				
+				for(var i2:int=0;i2<_items.length;i2++){				
+					var pParentItem:VOPackedItem = VOPackedItem(_items[i2]);					
+					pParentItem.isOpen = false;		
+					
+					if(pParentItem.isChild){
+						_items.splice(i2,1);
+						i2--;
+					}												
+				}
+				
+				_list.dataProvider = new ListCollection(_items);
+				_list.validate();															
+			}
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
@@ -279,80 +291,57 @@ package com.Application.robotlegs.views.packedList {
 		}
 		
 		
-		private function _handlerButtonSearch(event:Event):void{
-			/*_list.isEditing = !_list.isEditing; 
-			
-			_containerAddButtons.visible = _list.isEditing;
-			
-						
-			if(_list.isEditing){				
-				_containerAddButtons.y = int(_header.y + _header.height);
-				
-				_list.height = int(_nativeStage.fullScreenHeight- (_containerAddButtons.y+ _containerAddButtons.height));
-				_list.y = int(_containerAddButtons.y + _containerAddButtons.height);
-				_buttonSearch.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.done");				
-			} else {
-				//_list.y = int(_search.y + _search.height);
-				_list.height = int(_nativeStage.fullScreenHeight- _header.height);
-				_buttonSearch.label = _resourceManager.getString(Constants.RESOURCES_BUNDLE, "button.edit");
-			}
-			*/
-			 
-			
+		private function _handlerButtonApply(event:Event):void{
+			dispatchEvent(new EventViewPackedList(EventViewPackedList.GOTO_VIEW_LIST));
 		}
 		
 		private function _handlerBackbutton(event:Event):void{
-			dispatchEvent(new EventViewPackedList(EventViewPackedList.BACK_TO_PREVIOUS_SCREEN));
+			dispatchEvent(new EventViewPackedList(EventViewPackedList.BACK_TO_VIEW_CREATE));
 		}
 		
-		/**
-		 * 
-		 * Add new Category Handler
-		 * 
-		 */
-		private function _handlerAddNewCategory(event:Event):void{
-			_collapseItems();
-			dispatchEvent(new EventViewPackedList(EventViewPackedList.ADD_NEW_CATEGORY));
+		
+		private function _handlerChange(event:EventSearchInput):void{
+			if(_search.text.length > 0){
+				var pFilteredVector:Vector.<VOPackedItem> = new Vector.<VOPackedItem>();
+				for(var i:int=0;i<_items.length;i++){
+					var pItem:VOPackedItem = VOPackedItem(_items[i]);
+					
+					if(!pItem.isChild){					
+						var pFilTemp:Vector.<VOPackedItem> = Vector.<VOPackedItem>(pItem.childrens).filter(_searchFilter);					
+						pFilteredVector = pFilteredVector.concat(pFilTemp);					
+					}			
+				}
+				_list.dataProvider = new ListCollection(pFilteredVector);
+			}else{
+				_backToList();
+			}
 		}
 		
-		/**
-		 * 
-		 * Add new Item Handler
-		 * 
-		 */
-		private function _handlerAddNewItem(event:Event):void{
-			_collapseItems();
-			dispatchEvent(new EventViewPackedList(EventViewPackedList.ADD_NEW_ITEM));
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 
 		
-		
 		/**
 		 * 
-		 * Collapse Items
+		 * Search Filter
 		 * 
 		 */
-		private function _collapseItems():void{
-			if(_list && _items && _items.length > 0){
-				
-				for(var i:int=0;i<_items.length;i++){				
-					var pParentItem:VOPackedItem = VOPackedItem(_items[i]);					
-					pParentItem.isOpen = false;		
-					
-					if(pParentItem.isChild){
-						_items.splice(i,1);
-						i--;
-					}												
-				}
-				
-				_list.dataProvider = new ListCollection(_items);
-				_list.validate();															
-			}			
+		private function _searchFilter(item:VOPackedItem, index:int, vector:Vector.<VOPackedItem>):Boolean {
+			var pIsIsset:Boolean = false;
+			// your code here
+			
+			var pLabel:String = item.label.toLowerCase();
+			var pSearch:String = _search.text.toLowerCase();
+			
+			if(pLabel.indexOf(pSearch) >= 0){
+				pIsIsset = true;
+			}
+			
+			return pIsIsset;
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  END CLASS  

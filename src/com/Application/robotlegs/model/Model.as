@@ -42,7 +42,7 @@ package com.Application.robotlegs.model {
 			super();
 			
 			_appLists = new Vector.<VOList>();
-			_currentTableName = new VOList();
+			//_currentTableName = new VOList();
 		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -96,7 +96,12 @@ package com.Application.robotlegs.model {
 			
 			if(!_isMore){
 				var pVO:VOScreenID = new VOScreenID();
+				if(_currentTableName.isCreating){
+					_currentTableName.isCreating = false;
 					pVO.screenID = Main.VIEW_PACKED_LIST;
+				}else{
+					pVO.screenID = Main.VIEW_LIST;
+				}
 				dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
 			}
 			
@@ -105,7 +110,12 @@ package com.Application.robotlegs.model {
 		
 		public function get currentTableName():VOList { return _currentTableName;}
 		public function set currentTableName(value:VOList):void{
-			_currentTableName = value;							
+			_currentTableName = value;
+			if(!_currentTableName){
+				var pVO:VOScreenID = new VOScreenID();
+				pVO.screenID = Main.VIEW_MAIN;
+				dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));
+			}
 		}
 		
 		public function set isMore(value:Boolean):void{

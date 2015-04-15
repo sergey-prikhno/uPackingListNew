@@ -36,16 +36,11 @@ package com.Application.robotlegs.views.packedList {
 			super.onRegister();
 			
 			addContextListener(EventServiceCategories.UPDATED, _handlerUpdated, EventServiceCategories);
-			addContextListener(EventServiceCategories.REMOVED, _handlerRemoved, EventServiceCategories);			
+			addContextListener(EventServiceCategories.REMOVED, _handlerRemoved, EventServiceCategories);
 			
 			addViewListener(EventViewAbstract.REMOVE_PACKED_ITEM, _handlerRemoveItemDB, EventViewAbstract);			
 			addViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract); 
 			addViewListener(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, _handlerUpdateItemOrderIndexDB, EventViewAbstract);
-			
-			
-			addViewListener(EventViewPackedList.ADD_NEW_CATEGORY, _handlerAddNewCategory, EventViewPackedList);
-			addViewListener(EventViewPackedList.ADD_NEW_ITEM, _handlerAddNewItem, EventViewPackedList);
-						
 			
 			dispatch(new EventViewAbstract(EventViewAbstract.GET_MODEL_LIST_DATA, false, null, _setPackedListItems));
 		}
@@ -61,8 +56,6 @@ package com.Application.robotlegs.views.packedList {
 			removeViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract);
 			removeViewListener(EventViewAbstract.UPDATE_DB_ORDER_INDEXES, _handlerUpdateItemOrderIndexDB, EventViewAbstract);
 			
-			removeViewListener(EventViewPackedList.ADD_NEW_CATEGORY, _handlerAddNewCategory, EventViewPackedList);
-			removeViewListener(EventViewPackedList.ADD_NEW_ITEM, _handlerAddNewItem, EventViewPackedList);
 		}
 		
 	
@@ -104,7 +97,6 @@ package com.Application.robotlegs.views.packedList {
 			dispatch(new EventViewAbstract(EventViewAbstract.REMOVE_PACKED_ITEM, false, event.data));
 		}
 		
-		
 		private function _handlerUpdated(event:EventServiceCategories):void{
 			view.update(VOPackedItem(event.data));			
 		}
@@ -113,19 +105,6 @@ package com.Application.robotlegs.views.packedList {
 			view.removed(VOPackedItem(event.data));
 		}
 		
-		private function _handlerAddNewCategory(event:EventViewPackedList):void{
-			
-			
-			/*var pVO:VOScreenID = new VOScreenID();
-				pVO.screenID = Main.VIEW_ADD_CATEGORY;
-			dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));*/
-		}
-		
-		private function _handlerAddNewItem(event:EventViewPackedList):void{
-			/*var pVO:VOScreenID = new VOScreenID();
-			pVO.screenID = Main.VIEW_ADD_ITEM;
-			dispatch(new EventModel(EventModel.CHANGE_APP_SCREEN, false, pVO));*/
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  

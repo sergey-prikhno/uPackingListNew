@@ -27,7 +27,7 @@
 	<!-- A string value of the format <0-999>.<0-999>.<0-999> that represents application version which can be used to check for application upgrade. 
 	Values can also be 1-part or 2-part. It is not necessary to have a 3-part value.
 	An updated version of application must have a versionNumber value higher than the previous version. Required for namespace >= 2.5 . -->
-	<versionNumber>0.0.0</versionNumber>
+	<versionNumber>1.0.0</versionNumber>
 		         
 	<!-- A string value (such as "v1", "2.5", or "Alpha 1") that represents the version of the application, as it should be shown to users. Optional. -->
 	<!-- <versionLabel></versionLabel> -->
@@ -166,6 +166,29 @@
 		<image732x412></image732x412>
 		<image1024x1024></image1024x1024>
 	</icon> -->
+
+	<icon>
+		<image16x16>assets/system/icon16.png</image16x16>
+		<image29x29>assets/system/icon29.png</image29x29>
+		<image32x32>assets/system/icon32.png</image32x32>
+		<image36x36>assets/system/icon36.png</image36x36>
+		<image40x40>assets/system/icon40.png</image40x40>
+		<image48x48>assets/system/icon48.png</image48x48>
+		<image50x50>assets/system/icon50.png</image50x50>
+		<image57x57>assets/system/icon57.png</image57x57>
+		<image58x58>assets/system/icon58.png</image58x58>
+		<image60x60>assets/system/icon60.png</image60x60>
+		<image72x72>assets/system/icon72.png</image72x72>
+		<image76x76>assets/system/icon76.png</image76x76>
+		<image80x80>assets/system/icon80.png</image80x80>
+		<image96x96>assets/system/icon96.png</image96x96>
+		<image100x100>assets/system/icon100.png</image100x100>
+		<image114x114>assets/system/icon114.png</image114x114>
+		<image120x120>assets/system/icon120.png</image120x120>
+		<image128x128>assets/system/icon128.png</image128x128>
+		<image144x144>assets/system/icon144.png</image144x144>
+		<image152x152>assets/system/icon152.png</image152x152>			
+	</icon>
 
 	<!-- Whether the application handles the update when a user double-clicks an update version
 	of the AIR file (true), or the default AIR application installer handles the update (false).

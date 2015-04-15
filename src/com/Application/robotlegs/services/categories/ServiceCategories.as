@@ -27,6 +27,8 @@ package com.Application.robotlegs.services.categories {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		private var _currentItem:VOPackedItem;		
+		private var _currentTableName:String = "";
+		private var _isLoadCheck:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -115,7 +117,7 @@ package com.Application.robotlegs.services.categories {
 			
 			if(pTableName.length > 0){
 				pTableName = _updateName(pTableName);
-				
+				_isLoadCheck = false;
 				var pSql:String = DefaultData.SELECT_CATEGORY_TABLE_1+pTableName+DefaultData.SELECT_CATEGORY_TABLE_2;
 			
 				sqlRunner.execute(pSql, null, load_result, VOPackedItem);
@@ -148,6 +150,7 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["icon_id"] = value.icon_id;
 					
 					_currentItem = value;
+					_currentTableName = pTableName;
 					
 				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(pSql, paramsItem)]), update_result, database_error);
 			}
@@ -259,13 +262,29 @@ package com.Application.robotlegs.services.categories {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
+		/**
+		 *  check or uncheck item, load paked items 
+		 * 
+		 */
+		private function _loadPackedItemsAfterUpdate():void{
+			if(_currentTableName.length > 0){
+				_currentTableName = _updateName(_currentTableName);
+				_isLoadCheck = true;
+				var pSql:String = DefaultData.SELECT_CATEGORY_TABLE_1+_currentTableName+DefaultData.SELECT_CATEGORY_TABLE_2;
+				
+				sqlRunner.execute(pSql, null, load_result, VOPackedItem);
+			}
+		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		private function update_result(results:Vector.<SQLResult>):void {
-			dispatch(new EventServiceCategories(EventServiceCategories.UPDATED,false,_currentItem));			
+			dispatch(new EventServiceCategories(EventServiceCategories.UPDATED,false,_currentItem));
+			_loadPackedItemsAfterUpdate();
 			trace("table Updated");
 		}
 		
@@ -329,10 +348,27 @@ package com.Application.robotlegs.services.categories {
 				}								
 			}
 			
+			if(!_isLoadCheck){
+				model.currentCategories = pParent;
+			}else{
+				var pChildsAll:int = 0;
+				var pChildsCheked:int = 0;
+				var pParentLength:int = pParent.length;
+				
+				for (var i2:int = 0; i2 < pParentLength; i2++){
+					
+					var pChildLenth:int = pParent[i2].childrens.length;
+					for (var i3:int = 0; i3 < pChildLenth; i3++){
+						pChildsAll++;
+						if(pParent[i2].childrens[i3].isPacked){
+							pChildsCheked++;
+						}
+					}
+				}
+				var pPersent:Number = int(pChildsCheked*100/pChildsAll);
+				dispatch(new EventServiceCategories(EventServiceCategories.ADD_PERSENTS_TO_TABLE, false, pPersent));	
+			}
 			
-			model.currentCategories = pParent;							
-			
-		//	dispatch(new EventServiceCategories(EventServiceCategories.LOADED));
 		}
 	
 		

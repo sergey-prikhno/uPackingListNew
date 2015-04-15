@@ -1,17 +1,21 @@
-package com.Application.robotlegs.views {
+package com.Application.robotlegs.controller{
 	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.services.removeList.IServiceRemoveList;
 	
-	import org.robotlegs.starling.mvcs.Mediator;
+	import org.robotlegs.starling.mvcs.Command;
 	
-	public class MediatorViewAbstract extends Mediator {		
+	public class CommandBackToMainScreen extends Command{
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		
 		[Inject]
 		public var model:IModel;
+		
+		[Inject]
+		public var service:IServiceRemoveList;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -19,33 +23,31 @@ package com.Application.robotlegs.views {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function MediatorViewAbstract() 	{
+		
+		public function CommandBackToMainScreen()
+		{
 			super();
 		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL METHODS 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		override public function onRegister():void{	
-			super.onRegister();
-			
-			addViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
-			addViewListener(EventViewAbstract.CREATE_NEW_LIST, _handlerCreateNewList, EventViewAbstract);
+		
+		override public function execute():void{
+			if(model.currentTableName){
+				service.removeList(model.currentTableName);
+			}
+			model.currentTableName = null;
 		}
 		
-		
-		override public function onRemove():void {
-			super.onRemove();
-			
-			removeViewListener(EventViewAbstract.UPDATE_SETTINGS, _handlerUpdateSettings, EventViewAbstract);
-			removeViewListener(EventViewAbstract.CREATE_NEW_LIST, _handlerCreateNewList, EventViewAbstract);
-		}
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
@@ -59,18 +61,14 @@ package com.Application.robotlegs.views {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		private function _handlerUpdateSettings(event:EventViewAbstract):void{
-			dispatch(event);
-		}
 		
-		private function _handlerCreateNewList(event:EventViewAbstract):void{
-			dispatch(new EventViewAbstract(EventViewAbstract.ADD_NEW_LIST));
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
@@ -82,6 +80,7 @@ package com.Application.robotlegs.views {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
 	}
 }

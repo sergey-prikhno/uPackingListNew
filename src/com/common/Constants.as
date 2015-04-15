@@ -34,6 +34,7 @@ package com.common{
 		public static const BUTTON_INFO_POPUP:String = "BUTTON_INFO_POPUP";
 		public static const SKIN_POPUP_WHITE_BUTTON:String = "SKIN_POPUP_WHITE_BUTTON";
 		public static const BUTTON_CUSTOM_SEARCH:String = "BUTTON_CUSTOM_SEARCH";
+		public static const INPUT_TEXT_SEARCH_CUSTOM:String = "INPUT_TEXT_SEARCH_CUSTOM";
 		
 		
 		

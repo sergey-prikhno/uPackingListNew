@@ -18,8 +18,10 @@ package com.Application.robotlegs.model.vo {
 		private var _title:String = "";
 		private var _table_name:String = "";
 		private var _dateCreate:String = "";
+		private var _persents:Number = 0;
 		private var _isOpenEdit:Boolean = false;
 		private var _isOpenRemove:Boolean = false;
+		private var _isCreating:Boolean = false;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
@@ -38,6 +40,27 @@ package com.Application.robotlegs.model.vo {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
+
+		
+
+		public function get isCreating():Boolean
+		{
+			return _isCreating;
+		}
+
+		public function set isCreating(value:Boolean):void
+		{
+			_isCreating = value;
+		}
+
+		public function get persents():Number{
+			return _persents;
+		}
+
+		public function set persents(value:Number):void
+		{
+			_persents = value;
+		}
 
 		public function get isOpenRemove():Boolean
 		{
