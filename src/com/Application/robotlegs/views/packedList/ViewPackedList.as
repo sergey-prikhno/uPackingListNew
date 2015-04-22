@@ -1,6 +1,7 @@
 package com.Application.robotlegs.views.packedList {
 	import com.Application.robotlegs.model.vo.VOList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.ViewAbstract;
 	import com.Application.robotlegs.views.components.searchInput.EventSearchInput;
 	import com.Application.robotlegs.views.components.searchInput.SearchInput;
@@ -296,7 +297,12 @@ package com.Application.robotlegs.views.packedList {
 		}
 		
 		private function _handlerBackbutton(event:Event):void{
-			dispatchEvent(new EventViewPackedList(EventViewPackedList.BACK_TO_VIEW_CREATE));
+			if(_voList.isEditing){
+				_voList.isEditing = false;
+				dispatchEvent(new EventViewPackedList(EventViewAbstract.BACK_TO_MAIN_LIST_SCREEN));
+			}else{
+				dispatchEvent(new EventViewPackedList(EventViewPackedList.BACK_TO_VIEW_CREATE));
+			}
 		}
 		
 		

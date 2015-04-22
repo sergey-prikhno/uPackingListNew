@@ -3,6 +3,7 @@ package com.Application.themes {
 	import com.Application.components.calendar.stepper.CalendarStepper;
 	import com.Application.components.loadingIndicator.LoadingIndicator;
 	import com.Application.robotlegs.views.ViewAbstract;
+	import com.Application.robotlegs.views.components.renderers.ItemRendererToPackList;
 	import com.Application.robotlegs.views.components.renderers.ItemrendererList;
 	import com.Application.robotlegs.views.components.searchInput.SearchInput;
 	import com.Application.robotlegs.views.createList.ViewCreateList;
@@ -130,6 +131,7 @@ package com.Application.themes {
 			this.getStyleProviderForClass(PopupRemoveList).defaultStyleFunction = this.setPopupRemoveListStyles;
 			this.getStyleProviderForClass(ItemRendererPackedList).defaultStyleFunction = this.setItemRendererPackedStyles;
 			this.getStyleProviderForClass(SearchInput).defaultStyleFunction = this.setSearchInputStyles;
+			this.getStyleProviderForClass(ItemRendererToPackList).defaultStyleFunction = this.setItemRendererToPackListStyles;
 			
 			this.getStyleProviderForClass(Header).setFunctionForStyleName(Constants.CUSTOM_HEADER_NAME, this.setCustomHeaderStyles);
 			this.getStyleProviderForClass(Button).setFunctionForStyleName(Constants.BUTTON_ADD_LIST, this.setCustomButtonAddStyles);
@@ -179,6 +181,19 @@ package com.Application.themes {
 		}
 		
 		protected function setItemRendererPackedStyles(renderer:ItemRendererPackedList):void{			
+			renderer.scaleWidth = scaleWidth;
+			renderer.iconArrow = iconArrowRight;
+			renderer.iconUncheck = iconUncheck;
+			renderer.iconCheck = iconCheck;
+			renderer.atlas = atlas;			
+			renderer.efTitleRendererList = efTitleRendererList;
+			renderer.efTitleChildList = efTitleChildList;
+			renderer.efCountChildList = efCountChildList;
+			renderer.backgroundRendererListWhite = backgroundRendererListWhite;
+			renderer.backgroundRendererListGrey = backgroundRendererListGrey;
+		}
+		
+		protected function setItemRendererToPackListStyles(renderer:ItemRendererToPackList):void{			
 			renderer.scaleWidth = scaleWidth;
 			renderer.iconArrow = iconArrowRight;
 			renderer.iconUncheck = iconUncheck;

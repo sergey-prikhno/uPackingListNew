@@ -14,18 +14,18 @@ package com.common {
 		public static const TABLE_SEPARATOR:String = "TABLE_SEPARATOR";
 		
 		public static const CREATE_CATEGORY_TABLE_1:String = " CREATE TABLE main.";		
-		public static const CREATE_CATEGORY_TABLE_2:String = " (id int PRIMARY KEY AUTOINCREMENT, parentId int,isChild String,label String,isPacked String, orderIndex int, item_id int, icon_id int)";
+		public static const CREATE_CATEGORY_TABLE_2:String = " (id int PRIMARY KEY AUTOINCREMENT, parentId int,isChild String,label String,isPacked String, orderIndex int, item_id int, icon_id int, toPack String)";
 		
 		//insert row
 		public static const INSERT_CATEGORY_TABLE_1:String = " INSERT INTO main.";		
-		public static const INSERT_CATEGORY_TABLE_2:String = " (parentId,isChild,label,isPacked,orderIndex,item_id,icon_id) VALUES (:parentId,:isChild,:label,:isPacked,:orderIndex,:item_id,:icon_id) ";
+		public static const INSERT_CATEGORY_TABLE_2:String = " (parentId,isChild,label,isPacked,orderIndex,item_id,icon_id,toPack) VALUES (:parentId,:isChild,:label,:isPacked,:orderIndex,:item_id,:icon_id,:toPack) ";
 		
 		//update row
 		public static const UPDATE_CATEGORY_TABLE_1:String = " UPDATE main.";		
-		public static const UPDATE_CATEGORY_TABLE_2:String = " SET parentId = :parentId, isChild = :isChild, label = :label, isPacked = :isPacked, orderIndex = :orderIndex, item_id = :item_id, icon_id = :icon_id WHERE  id = :id";
+		public static const UPDATE_CATEGORY_TABLE_2:String = " SET parentId = :parentId, isChild = :isChild, label = :label, isPacked = :isPacked, orderIndex = :orderIndex, item_id = :item_id, icon_id = :icon_id, toPack = :toPack WHERE  id = :id";
 		
 		//Select 		
-		public static const SELECT_CATEGORY_TABLE_1:String = " SELECT id,parentId,isChild,label,isPacked,orderIndex,item_id,icon_id FROM main.";		
+		public static const SELECT_CATEGORY_TABLE_1:String = " SELECT id,parentId,isChild,label,isPacked,orderIndex,item_id,icon_id,toPack FROM main.";		
 		public static const SELECT_CATEGORY_TABLE_2:String = " ORDER BY orderIndex";
 		
 		//Delete 		

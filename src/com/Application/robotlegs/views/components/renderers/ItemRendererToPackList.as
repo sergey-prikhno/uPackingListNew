@@ -1,7 +1,7 @@
-package com.Application.robotlegs.views.packedList.listPacked {	
+package com.Application.robotlegs.views.components.renderers{	
 	import com.Application.robotlegs.model.vo.VOPackedItem;
 	import com.Application.robotlegs.views.EventViewAbstract;
-	import com.Application.robotlegs.views.packedList.EventViewPackedList;
+	import com.Application.robotlegs.views.list.EventViewList;
 	
 	import flash.geom.Point;
 	import flash.text.engine.ElementFormat;
@@ -26,7 +26,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 	import starling.textures.TextureSmoothing;
 	import starling.utils.deg2rad;
 	
-	public class ItemRendererPackedList extends FeathersControl implements IListItemRenderer, IFocusDisplayObject {						
+	public class ItemRendererToPackList extends FeathersControl implements IListItemRenderer, IFocusDisplayObject {						
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
@@ -81,7 +81,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
-		public function ItemRendererPackedList() {
+		public function ItemRendererToPackList() {
 			super();			
 			this.isFocusEnabled = true;
 			this.isQuickHitAreaEnabled = false;
@@ -96,8 +96,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		
 		override public function dispose():void	{
 			if(_owner){
-				this._owner.removeEventListener(EventViewPackedList.UPDATE_PACKED_ITEM, _handlerUpdatePacked);
-				this._owner.removeEventListener(EventViewPackedList.UPDATE_STATE, _handlerUpdateState);
+				this._owner.removeEventListener(EventViewList.UPDATE_PACKED_ITEM, _handlerUpdatePacked);
 			}
 			this._owner = null;
 			if(_imageBGGrey){
@@ -162,7 +161,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 
-		override protected function get defaultStyleProvider():IStyleProvider {	return ItemRendererPackedList.globalStyleProvider;}
+		override protected function get defaultStyleProvider():IStyleProvider {	return ItemRendererToPackList.globalStyleProvider;}
 		public function set efCountChildList(value:ElementFormat):void{_efCountChildList = value;}
 		public function set backgroundRendererListGrey(value:Scale9Textures):void{
 			if(value){
@@ -207,9 +206,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			}
 			_owner = List(value);	
 			if(_owner){
-				_owner.addEventListener(EventViewPackedList.UPDATE_PACKED_ITEM, _handlerUpdatePacked);
-				_owner.addEventListener(EventViewPackedList.UPDATE_STATE, _handlerUpdateState);
-				_updateState();
+				_owner.addEventListener(EventViewList.UPDATE_PACKED_ITEM, _handlerUpdatePacked);
 			}
 			this.invalidate(INVALIDATION_FLAG_DATA);
 		}
@@ -262,8 +259,8 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			
 			if(_iconArrow){
 				_iconArrow.scaleX = _iconArrow.scaleY = _scaleWidth;								
+				_iconArrow.y = int(height/2);			
 				_iconArrow.x = int(width - _iconArrow.width/2 - 40*_scaleWidth);
-				_iconArrow.y = int(height/2);				
 			}			
 			
 			
@@ -344,7 +341,6 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					
 					_refreshImage();
 																						
-	//				trace("created");								
 				}
 			}
 		}
@@ -356,7 +352,7 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					_imageBGGrey.visible = true;
 					_iconUncheck.visible = true;
 					
-					if(_data.isPacked){
+					if(_data.toPack == "1"){
 						_iconCheck.visible = true;
 					} else {
 						_iconCheck.visible = false;
@@ -390,18 +386,14 @@ package com.Application.robotlegs.views.packedList.listPacked {
 				
 				
 				if(_data.childrens){
-					_labelCount.text = _data.packedCount+" / "+_data.childrens.length;	
+					_labelCount.text = _getCountChild();	
 				} else {
 					_labelCount.text = "0 / 0";
 				}				
 				
 				_labelCount.validate();
-				//_image.label = _data.label;
 			}			
 		}
-		
-		
-		
 		
 		
 		protected function resetTouchState(touch:Touch = null):void {
@@ -434,14 +426,18 @@ package com.Application.robotlegs.views.packedList.listPacked {
 					//this.dispatchEventWith(Event.TRIGGERED,true,_data);													
 					
 					if(_data.isChild){
-						_data.isPacked = !_data.isPacked;
+						//_data.isPacked = !_data.isPacked;
+						if(_data.toPack == "0"){
+							_data.toPack = "1";
+						}else{
+							_data.toPack = "0";
+						}
 						
 						if(_data.isChild){								
-							if(_data.isPacked){
+							if(_data.toPack == "1"){
 								_iconCheck.visible = true;
 							} else {
 								_iconCheck.visible = false;
-								_data.toPack = "0";
 							}
 						}
 							
@@ -449,10 +445,10 @@ package com.Application.robotlegs.views.packedList.listPacked {
 						
 					} else if(_data.childrens && _data.childrens.length > 0){
 						_data.index = _index;
-						this.dispatchEventWith(EventViewPackedList.CLICK_ITEM,true,_data);
+						this.dispatchEventWith(EventViewList.CLICK_ITEM,true,_data);
 						if(!_data.isOpen){					
 							_data.isOpen = true;								
-							_iconArrow.rotation = deg2rad(90);
+							_iconArrow.rotation = deg2rad(90);	
 						} else {					
 							_data.isOpen = false;								
 							_iconArrow.rotation = deg2rad(0);
@@ -470,37 +466,46 @@ package com.Application.robotlegs.views.packedList.listPacked {
 			this.resetTouchState();
 		}
 		
-		private function _handlerUpdatePacked(event:EventViewPackedList):void{
+		private function _handlerUpdatePacked(event:EventViewList):void{
 			
 			var pData:VOPackedItem = VOPackedItem(event.data);
 			
 			if(pData.parentId == _data.id){
 				if(_data.childrens){
-					_labelCount.text = _data.packedCount+" / "+_data.childrens.length;	
+					_labelCount.text = _getCountChild();	
 				} else {
 					_labelCount.text = "0 / 0";
 				}	
 			}			
 		}
 		
-		private function _handlerUpdateState(event:EventViewPackedList):void{
-			_updateState();					
-		}
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  HELPERS  
 		// 
 		//--------------------------------------------------------------------------------------------------------- 										
-		private function  _updateState():void{
-			if(_iconArrow){
-				if(_data.isOpen){																	
-					_iconArrow.rotation = deg2rad(90);							
-				} else {														
-					_iconArrow.rotation = deg2rad(0);
-				}	
+		
+		private function _getCountChild():String{
+			var pCount:String = "";
+			var pChildLength:int = 0;
+			var pChildPack:int = 0;
+			
+			var pLength:int = _data.childrens.length;
+			for (var i:int = 0; i < pLength; i++){
+				if(_data.childrens[i].isPacked){
+					pChildLength++;
+				}
+				if(_data.childrens[i].toPack == "1"){
+					pChildPack++;
+				}
 			}
+			
+			
+			pCount = pChildPack+" / "+pChildLength;
+			
+			return pCount;
 		}
-							
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  END CLASS  

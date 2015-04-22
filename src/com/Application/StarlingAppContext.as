@@ -1,5 +1,6 @@
 package com.Application {
 	import com.Application.robotlegs.controller.CommandBackToMainScreen;
+	import com.Application.robotlegs.controller.CommandEditViewPackList;
 	import com.Application.robotlegs.controller.CommandGetCreatedLists;
 	import com.Application.robotlegs.controller.CommandGetCurrentVOListCallback;
 	import com.Application.robotlegs.controller.CommandGetListDataFunctionCallback;
@@ -127,6 +128,7 @@ package com.Application {
 			commandMap.mapEvent(EventServiceCategories.ADD_PERSENTS_TO_TABLE, CommandAddPersentsToTable, EventServiceCategories);
 			commandMap.mapEvent(EventViewAbstract.GET_CURRENT_VOLIST, CommandGetCurrentVOListCallback, EventViewAbstract);
 			commandMap.mapEvent(EventViewCreateList.BACK_TO_MAIN_SCREEN, CommandBackToMainScreen, EventViewCreateList);
+			commandMap.mapEvent(EventViewMain.SHOW_VIEW_EDIT_PACKLIST, CommandEditViewPackList, EventViewMain);
 			
 			//popup
 			commandMap.mapEvent(EventViewAbstract.SHOW_INFO_POPUP, CommandInfoPopup, EventViewAbstract);

@@ -99,6 +99,9 @@ package com.Application.robotlegs.model {
 				if(_currentTableName.isCreating){
 					_currentTableName.isCreating = false;
 					pVO.screenID = Main.VIEW_PACKED_LIST;
+				}else if(_currentTableName.isEditing){
+					_currentTableName.isCreating = false;
+					pVO.screenID = Main.VIEW_PACKED_LIST;
 				}else{
 					pVO.screenID = Main.VIEW_LIST;
 				}

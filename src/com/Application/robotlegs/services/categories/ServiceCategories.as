@@ -72,6 +72,7 @@ package com.Application.robotlegs.services.categories {
 							paramsItem["orderIndex"] = pItem.orderIndex;
 							paramsItem["item_id"] = pItem.item_id;
 							paramsItem["icon_id"] = pItem.icon_id;
+							paramsItem["toPack"] = pItem.toPack;
 					
 						stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsItem);
 					
@@ -94,6 +95,7 @@ package com.Application.robotlegs.services.categories {
 								paramsChild["orderIndex"] = pChild.orderIndex;
 								paramsChild["item_id"] = pChild.item_id;
 								paramsChild["icon_id"] = pChild.icon_id;
+								paramsChild["toPack"] = pChild.toPack;
 							
 							stmts[stmts.length] = new QueuedStatement(pSqlInsert,paramsChild);
 						}
@@ -148,6 +150,7 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["orderIndex"] = value.orderIndex;
 					paramsItem["item_id"] = value.item_id;
 					paramsItem["icon_id"] = value.icon_id;
+					paramsItem["toPack"] = value.toPack;
 					
 					_currentItem = value;
 					_currentTableName = pTableName;
@@ -177,6 +180,7 @@ package com.Application.robotlegs.services.categories {
 					paramsItem["orderIndex"] = value.orderIndex;
 					paramsItem["item_id"] = value.item_id;
 					paramsItem["icon_id"] = value.icon_id;
+					paramsItem["toPack"] = value.toPack;
 						
 			
 				sqlRunner.executeModify(Vector.<QueuedStatement>([new QueuedStatement(pSql, paramsItem)]), insert_result, database_error);
@@ -240,6 +244,7 @@ package com.Application.robotlegs.services.categories {
 							paramsItem["orderIndex"] = pCurrentData.orderIndex;
 							paramsItem["item_id"] = pCurrentData.item_id;
 							paramsItem["icon_id"] = pCurrentData.icon_id;
+							paramsItem["toPack"] = pCurrentData.toPack;
 							
 							stmts[stmts.length] = new QueuedStatement(pSql,paramsItem);
 						
@@ -359,8 +364,10 @@ package com.Application.robotlegs.services.categories {
 					
 					var pChildLenth:int = pParent[i2].childrens.length;
 					for (var i3:int = 0; i3 < pChildLenth; i3++){
-						pChildsAll++;
 						if(pParent[i2].childrens[i3].isPacked){
+							pChildsAll++;
+						}
+						if(pParent[i2].childrens[i3].toPack == "1"){
 							pChildsCheked++;
 						}
 					}

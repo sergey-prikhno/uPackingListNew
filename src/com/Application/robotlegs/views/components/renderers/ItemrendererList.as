@@ -3,7 +3,9 @@ package com.Application.robotlegs.views.components.renderers{
 	import com.Application.robotlegs.views.main.EventViewMain;
 	import com.common.Constants;
 	
+	import flash.geom.Point;
 	import flash.text.engine.ElementFormat;
+	import flash.utils.getTimer;
 	
 	import feathers.controls.Button;
 	import feathers.controls.Label;
@@ -63,7 +65,6 @@ package com.Application.robotlegs.views.components.renderers{
 		private var _buttonRemove:Button;
 		private var _buttonEdit:Button;
 		
-		private var _isSwipe:Boolean = false;
 		private var _containerSwipe:Sprite;
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -123,9 +124,6 @@ package com.Application.robotlegs.views.components.renderers{
 				_imageArrow = null;
 			}
 			if(_containerSwipe){
-				if(_containerSwipe.hasEventListener(TouchEvent.TOUCH)){
-					_containerSwipe.removeEventListener(TouchEvent.TOUCH, _handlerTouchContainer);
-				}
 				removeChild(_containerSwipe);
 				_containerSwipe = null;
 			}
@@ -318,7 +316,6 @@ package com.Application.robotlegs.views.components.renderers{
 		}
 		
 		private function _showEdit(value:Boolean):void{
-			_isSwipe = true;
 			_data.isOpenEdit = value;
 			var pX:Number = 0;
 			if(value){
@@ -334,14 +331,10 @@ package com.Application.robotlegs.views.components.renderers{
 		}
 		
 		private function _completeMove():void{
-			if(_containerSwipe && !_containerSwipe.hasEventListener(TouchEvent.TOUCH)){
-				_containerSwipe.addEventListener(TouchEvent.TOUCH, _handlerTouchContainer);
-			}
-			_isSwipe = false;
+			Starling.juggler.removeTweens(_containerSwipe);
 		}
 		
 		private function _showRemove(value:Boolean):void{
-			_isSwipe = true;
 			_data.isOpenRemove = value;
 			var pX:Number = 0;
 			if(value){
@@ -362,6 +355,7 @@ package com.Application.robotlegs.views.components.renderers{
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		private function _handlerHideButton(event:EventRenderer):void{
 			if(_index == event.payload){
 				return;
@@ -377,68 +371,149 @@ package com.Application.robotlegs.views.components.renderers{
 				}
 			}
 		}
-		
-		
-		private function _handlerTouchContainer(event:TouchEvent):void{			
-			
-			var touch:Touch = event.getTouch(_containerSwipe);
-			
-			if(touch){
-				if(touch.phase == TouchPhase.MOVED){
-					var pDeltaX:Number = touch.globalX - touch.previousGlobalX;
-					var pDeltaY:Number = touch.globalY - touch.previousGlobalY;
-					var pCanSwipe:Boolean = true;
-					
-					if(pDeltaY > actualHeight || pDeltaY < ((-1)*actualHeight)){
-						pCanSwipe = false;
-					}
-					
-					if(pDeltaX > 20 && pCanSwipe){
-						_containerSwipe.removeEventListener(TouchEvent.TOUCH, _handlerTouchContainer);
-						_owner.stopScrolling();
-						if(_data.isOpenRemove){
-							_showEdit(false);
-						}else{
-							_showEdit(true);
-						}
-					}
-					if(pDeltaX < -20 && pCanSwipe){
-						_containerSwipe.removeEventListener(TouchEvent.TOUCH, _handlerTouchContainer);
-						_owner.stopScrolling();
-						if(_data.isOpenEdit){
-							_showRemove(false);
-						}else{
-							_showRemove(true);
-						}
-					}
-					
-				}
-			}
-		}
-		
 	
 		private function _handlerButtonRemove(event:Event):void{
 			dispatchEvent(new EventViewMain(EventViewMain.SHOW_REMOVE_LIST_POPUP, true, _data));
 		}
 		
 		private function _handlerButtonEdit(event:Event):void{
-
+			dispatchEvent(new EventViewMain(EventViewMain.SHOW_VIEW_EDIT_PACKLIST, true, _data));
 		}
 		
 		protected function removedFromStageHandler(event:starling.events.Event):void{
 			this.touchPointID = -1;
 		}
 		
+		
+		private static const HELPER_POINT:Point = new Point();
+		protected var _isLongPressEnabled:Boolean = true;
+		protected var _hasLongPressed:Boolean = false;
+		protected var _touchBeginTime:int;
+		protected var _longPressDuration:Number = 0.2;
+		
 		protected function _touchHandler(event:TouchEvent):void{
-			var touch:Touch = event.getTouch(stage);
-			if(touch){
-				if(touch.phase == TouchPhase.ENDED && !_owner.isScrolling) {
-					if(!_data.isOpenEdit && !_data.isOpenRemove && !_isSwipe){
-						dispatchEvent(new EventViewMain(EventViewMain.GET_SELECTED_LIST_DATA, true, _data));
-					}
-				}
+			
+			if(!_isEnabled){
+				this.touchPointID = -1;
+				return;
 			}
 			
+			if(this.touchPointID >= 0){
+				var touch:Touch = event.getTouch(this, null, this.touchPointID);
+				
+				if( touch.phase == TouchPhase.ENDED ){
+					touch.getLocation( this.stage, HELPER_POINT );
+					var isInBounds:Boolean = this.contains( this.stage.hitTest( HELPER_POINT, true ) );
+					if( !this._hasLongPressed && isInBounds ){
+						this.dispatchEventWith(Event.TRIGGERED);
+						this.isSelected = !this.isSelected;
+						
+						if(_containerSwipe.x == 0 && !_owner.isScrolling){
+							_data.isEditing = false;
+							_data.isCreating = false;
+							_data.isOpenRemove = false;
+							_owner.dispatchEvent(new EventRenderer(EventRenderer.RENDERER_HIDE_BUTTONS, _index));
+							dispatchEvent(new EventViewMain(EventViewMain.GET_SELECTED_LIST_DATA, true, _data));
+						}
+						
+					}
+					
+					this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+					
+					this.touchPointID = -1;
+				}
+				return;
+			}else{
+				
+				touch = event.getTouch( this, TouchPhase.BEGAN );
+				if(touch){
+					this.touchPointID = touch.id;
+					this._hasLongPressed = false;
+					_touchBeginTime = getTimer();
+					this.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+				}
+			}
+		}
+		
+		private function enterFrameHandler(e:Event):void{
+			var accumulatedTime:Number = (getTimer() - _touchBeginTime) / 1000;
+			if(accumulatedTime >= _longPressDuration){
+				this._hasLongPressed = true;
+				this.removeEventListener(Event.ENTER_FRAME, enterFrameHandler);
+				trace("DISPATCH LONG PRESS");
+			}
+		}
+		
+		private function _handlerTouchContainer(event:TouchEvent):void{
+			var touch:Touch = event.getTouch(_containerSwipe);
+			if(touch){
+				if(touch.phase == TouchPhase.ENDED && _hasLongPressed) {
+					
+					if(_containerSwipe.x > 0){
+						if(_containerSwipe.x <= _buttonEdit.width/1.5 && _data.isOpenEdit){
+							_showEdit(false);
+						}else if(_containerSwipe.x >= _buttonEdit.width/4 && !_data.isOpenEdit){
+							_showEdit(true);
+						}else if(_containerSwipe.x < _buttonEdit.width/4){
+							_showEdit(false);
+						}else if(_containerSwipe.x > _buttonEdit.width/1.5){
+							_showEdit(true);
+						}
+					}else{
+						if(_containerSwipe.x >= -_buttonRemove.width/1.5 && _data.isOpenRemove){
+							_showRemove(false);
+						}else if(_containerSwipe.x <= -_buttonEdit.width/4 && !_data.isOpenRemove){
+							_showRemove(true);
+						}else if(_containerSwipe.x > -_buttonEdit.width/4){
+							_showRemove(false);
+						}else if(_containerSwipe.x < -_buttonEdit.width/1.5){
+							_showRemove(true);
+						}
+					}
+					_hasLongPressed = false;
+				}
+				
+				if(touch.phase == TouchPhase.MOVED && !_owner.isScrolling){
+					var pDeltaX:Number = touch.globalX - touch.previousGlobalX;
+					var pDeltaY:Number = touch.globalY - touch.previousGlobalY;
+					
+					if(_hasLongPressed){
+						_owner.stopScrolling();
+						_containerSwipe.x += pDeltaX;
+						
+						if(_containerSwipe.x <= -_buttonRemove.width){
+							_containerSwipe.x = -_buttonRemove.width;
+						}
+						if(_containerSwipe.x >= _buttonEdit.width){
+							_containerSwipe.x = _buttonEdit.width;
+						}
+					}else{
+						var pCanSwipe:Boolean = true;
+						
+						if(pDeltaY > actualHeight || pDeltaY < ((-1)*actualHeight)){
+							pCanSwipe = false;
+						}
+						
+						if(pDeltaX > 20 && pCanSwipe){
+							_owner.stopScrolling();
+							if(_data.isOpenRemove){
+								_showEdit(false);
+							}else{
+								_showEdit(true);
+							}
+						}
+						if(pDeltaX < -20 && pCanSwipe){
+							_owner.stopScrolling();
+							if(_data.isOpenEdit){
+								_showRemove(false);
+							}else{
+								_showRemove(true);
+							}
+						}
+					}
+					
+				}
+			}
 		}
 		
 		

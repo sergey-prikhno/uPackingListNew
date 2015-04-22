@@ -126,7 +126,7 @@ package{
 			_starling = new Starling(Main, this.stage);
 			_starling.simulateMultitouch = true;
 			_starling.enableErrorChecking = Capabilities.isDebugger;
-			//_starling.showStats = !Capabilities.isDebugger;
+			
 			_starling.showStatsAt(HAlign.LEFT, VAlign.BOTTOM);
 			_starling.addEventListener(Event.ADDED_TO_STAGE, starling_rootCreatedHandler);									
 			

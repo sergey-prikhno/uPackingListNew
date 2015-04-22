@@ -7,5 +7,6 @@ CREATE TABLE main.categories
 	isPacked String,
 	orderIndex int,
 	item_id int,
-	icon_id int
+	icon_id int,
+	toPack String
 )

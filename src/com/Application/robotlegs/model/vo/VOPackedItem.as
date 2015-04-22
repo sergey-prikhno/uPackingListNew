@@ -23,6 +23,7 @@ package com.Application.robotlegs.model.vo {
 		private var _orderIndex:int = 1;
 		private var _isOpen:Boolean = false;
 		private var _isPacked:Boolean = false;
+		private var _toPack:String = "0";
 		private var _packedCount:Number = 0;
 		private var _item_id:Number = 0;
 		private var _icon_id:Number = 0;
@@ -52,6 +53,7 @@ package com.Application.robotlegs.model.vo {
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
+
 		public function get id():Number { return _id;}
 		public function set id(value:Number):void{
 			_id = value;
@@ -64,7 +66,6 @@ package com.Application.robotlegs.model.vo {
 		
 		public function get isChild():Boolean { return _isChild;}
 		public function set isChild(value:*):void{
-			
 			if(value is String){
 				if(value == "false"){					
 					_isChild = false;
@@ -74,9 +75,11 @@ package com.Application.robotlegs.model.vo {
 			}else {
 				_isChild = value;
 			}
-				
-			
-			
+		}
+		
+		public function get toPack():String{return _toPack;}
+		public function set toPack(value:String):void{
+			_toPack = value;
 		}
 		
 		public function get label():String { return _label;}

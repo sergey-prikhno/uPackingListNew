@@ -39,6 +39,7 @@ package com.Application.robotlegs.views.main {
 			super.onRegister();
 						
 			addViewListener(EventViewMain.SHOW_REMOVE_LIST_POPUP, _handlerShowRemoveListPopup, EventViewMain);
+			addViewListener(EventViewMain.SHOW_VIEW_EDIT_PACKLIST, _handlerGotoViewPackedList, EventViewMain);
 			addViewListener(EventViewMain.GET_SELECTED_LIST_DATA, _handlerGetSelectedListData, EventViewMain);
 			
 			addContextListener(EventServiceRemoveList.REMOVED_LIST_DB, _handlerUpdateRemovedList, EventServiceRemoveList);
@@ -52,6 +53,7 @@ package com.Application.robotlegs.views.main {
 					
 			removeContextListener(EventServiceRemoveList.REMOVED_LIST_DB, _handlerUpdateRemovedList, EventServiceRemoveList);
 			
+			removeViewListener(EventViewMain.SHOW_VIEW_EDIT_PACKLIST, _handlerGotoViewPackedList, EventViewMain);
 			removeViewListener(EventViewMain.SHOW_REMOVE_LIST_POPUP, _handlerShowRemoveListPopup);
 			removeViewListener(EventViewMain.GET_SELECTED_LIST_DATA, _handlerGetSelectedListData, EventViewMain);
 		}
@@ -87,6 +89,10 @@ package com.Application.robotlegs.views.main {
 		
 		private function _handlerShowRemoveListPopup(event:EventViewMain):void{
 			dispatch(new EventViewMain(EventViewMain.SHOW_REMOVE_LIST_POPUP, false, event.data));
+		}
+		
+		private function _handlerGotoViewPackedList(event:EventViewMain):void{
+			dispatch(new EventViewMain(EventViewMain.SHOW_VIEW_EDIT_PACKLIST, false, event.data));
 		}
 		
 		//--------------------------------------------------------------------------------------------------------- 

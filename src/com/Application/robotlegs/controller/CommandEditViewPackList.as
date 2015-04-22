@@ -1,33 +1,44 @@
-package com.Application.robotlegs.model.vo {
+package com.Application.robotlegs.controller{
 	
-	public class VOList {
+	import com.Application.robotlegs.model.IModel;
+	import com.Application.robotlegs.model.vo.VOList;
+	import com.Application.robotlegs.services.categories.IServiceCategories;
+	import com.Application.robotlegs.views.main.EventViewMain;
+	
+	import org.robotlegs.starling.mvcs.Command;
+	
+	public class CommandEditViewPackList extends Command{
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  PUBLIC & INTERNAL VARIABLES 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		[Inject]
+		public var model:IModel;
 		
+		[Inject]
+		public var event:EventViewMain;
+		
+		[Inject]
+		public var service:IServiceCategories;
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		// PRIVATE & PROTECTED VARIABLES
 		//
 		//---------------------------------------------------------------------------------------------------------
-		private var _id:Number = 0;
-		private var _title:String = "";
-		private var _table_name:String = "";
-		private var _dateCreate:String = "";
-		private var _persents:Number = 0;
-		private var _isOpenEdit:Boolean = false;
-		private var _isOpenRemove:Boolean = false;
-		private var _isCreating:Boolean = false;
-		private var _isEditing:Boolean = false;
+		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
 		//  CONSTRUCTOR 
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		
+		public function CommandEditViewPackList(){
+			super();
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -35,83 +46,20 @@ package com.Application.robotlegs.model.vo {
 		// 
 		//---------------------------------------------------------------------------------------------------------
 		
+		override public function execute():void{
+			var pData:VOList = VOList(event.data);
+			pData.isEditing = true;
+			model.currentTableName = pData;
+			
+			service.load(model.currentTableName.table_name);
+		}
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  GETTERS & SETTERS   
 		// 
 		//---------------------------------------------------------------------------------------------------------
-
 		
-
-		public function get isEditing():Boolean
-		{
-			return _isEditing;
-		}
-
-		public function set isEditing(value:Boolean):void
-		{
-			_isEditing = value;
-		}
-
-		public function get isCreating():Boolean
-		{
-			return _isCreating;
-		}
-
-		public function set isCreating(value:Boolean):void
-		{
-			_isCreating = value;
-		}
-
-		public function get persents():Number{
-			return _persents;
-		}
-
-		public function set persents(value:Number):void
-		{
-			_persents = value;
-		}
-
-		public function get isOpenRemove():Boolean
-		{
-			return _isOpenRemove;
-		}
-
-		public function set isOpenRemove(value:Boolean):void
-		{
-			_isOpenRemove = value;
-		}
-
-		public function get isOpenEdit():Boolean
-		{
-			return _isOpenEdit;
-		}
-
-		public function set isOpenEdit(value:Boolean):void
-		{
-			_isOpenEdit = value;
-		}
-
-		public function get date_create():String{return _dateCreate;}
-		public function set date_create(value:String):void{
-			_dateCreate = value;
-		}
-
-		public function get id():Number { return _id;}
-		public function set id(value:Number):void{
-			_id = value;
-		}	
-		
-		public function get title():String { return _title;}
-		public function set title(value:String):void{
-			_title = value;
-		}
-		
-		public function get table_name():String { return _table_name;}
-		public function set table_name(value:String):void{
-			_table_name = value;
-		}	
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		//
@@ -119,11 +67,13 @@ package com.Application.robotlegs.model.vo {
 		//
 		//---------------------------------------------------------------------------------------------------------
 		
+		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------
+		
 		
 		//--------------------------------------------------------------------------------------------------------- 
 		// 
@@ -136,6 +86,8 @@ package com.Application.robotlegs.model.vo {
 		// 
 		//  END CLASS  
 		// 
-		//--------------------------------------------------------------------------------------------------------- 
+		//---------------------------------------------------------------------------------------------------------
+		
+		
 	}
 }

@@ -44,6 +44,7 @@ package com.Application.robotlegs.controller.service.categories {
 			trace("Select table Wait for Event with DATA Here");
 								
 			var pData:VOList = VOList(event.data);
+			
 			model.currentTableName = pData;
 			
 			service.load(model.currentTableName.table_name);			

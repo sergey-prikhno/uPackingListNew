@@ -1,6 +1,7 @@
 package com.Application.robotlegs.views.list {
 	import com.Application.robotlegs.model.vo.VOList;
 	import com.Application.robotlegs.model.vo.VOPackedItem;
+	import com.Application.robotlegs.services.categories.EventServiceCategories;
 	import com.Application.robotlegs.views.EventViewAbstract;
 	import com.Application.robotlegs.views.MediatorViewAbstract;
 	
@@ -35,7 +36,10 @@ package com.Application.robotlegs.views.list {
 		override public function onRegister():void{	
 			super.onRegister();
 			
+			addContextListener(EventServiceCategories.UPDATED, _handlerUpdated, EventServiceCategories);
+			
 			addViewListener(EventViewList.BACK_TO_MAIN_SCREEN, _handlerBacktoMainScreen, EventViewList);
+			addViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract);
 			
 			dispatch(new EventViewAbstract(EventViewAbstract.GET_MODEL_LIST_DATA, false, null, _setPackedListItems));
 		}
@@ -43,7 +47,10 @@ package com.Application.robotlegs.views.list {
 		
 		override public function onRemove():void {
 			super.onRemove();
-					
+				
+			removeContextListener(EventServiceCategories.UPDATED, _handlerUpdated, EventServiceCategories);
+			
+			removeViewListener(EventViewAbstract.UPDATE_DB_PACKED_ITEM, _handlerUpdateItemDB, EventViewAbstract);
 			removeViewListener(EventViewList.BACK_TO_MAIN_SCREEN, _handlerBacktoMainScreen, EventViewList);
 		}
 		
@@ -72,6 +79,16 @@ package com.Application.robotlegs.views.list {
 		//  EVENT HANDLERS  
 		// 
 		//---------------------------------------------------------------------------------------------------------				
+		
+		private function _handlerUpdated(event:EventServiceCategories):void{
+			view.update(VOPackedItem(event.data));			
+		}
+		
+		
+		private function _handlerUpdateItemDB(event:EventViewAbstract):void{
+			event.stopPropagation();						
+			dispatch(new EventViewAbstract(EventViewAbstract.UPDATE_DB_PACKED_ITEM, false, event.data));
+		}
 		
 		private function _handlerBacktoMainScreen(event:EventViewList):void{
 			model.currentTableName = null;
